@@ -13,8 +13,11 @@ use Kryus\Binary\DataType\Word;
 
 class ByteStream
 {
-    /** @var string */
-    private $contents;
+    /** @var resource */
+    private $handle;
+
+    /** @var bool */
+    private $internalHandle = false;
 
     /** @var int */
     private $cursor = 0;
@@ -23,31 +26,42 @@ class ByteStream
     private $endianness;
 
     /**
-     * @param string $contents
+     * @param resource $handle
      * @param int $endianness
      * @throws \Exception
      */
-    public function __construct(string $contents, int $endianness = BinaryValue::ENDIANNESS_LITTLE_ENDIAN)
+    public function __construct($handle, int $endianness = BinaryValue::ENDIANNESS_LITTLE_ENDIAN)
     {
         if (!in_array($endianness, [BinaryValue::ENDIANNESS_LITTLE_ENDIAN, BinaryValue::ENDIANNESS_BIG_ENDIAN], true)) {
             throw new \Exception('Invalid endianness type.');
         }
 
-        $this->contents = $contents;
+        $this->handle = $handle;
         $this->endianness = $endianness;
+    }
+
+    public function __destruct()
+    {
+        if ($this->internalHandle) {
+            $this->close();
+        }
     }
 
     /**
      * @param string $filename
+     * @param string $mode
      * @param int $endianness
      * @return ByteStream
      * @throws \Exception
      */
-    public static function createFromFilename(string $filename, int $endianness = BinaryValue::ENDIANNESS_LITTLE_ENDIAN): ByteStream
+    public static function createFromFilename(string $filename, string $mode, int $endianness = BinaryValue::ENDIANNESS_LITTLE_ENDIAN): ByteStream
     {
-        $contents = file_get_contents($filename);
+        $handle = fopen($filename, $mode);
 
-        return new self($contents, $endianness);
+        $stream = new self($handle, $endianness);
+        $stream->internalHandle = true;
+
+        return $stream;
     }
 
     /**
@@ -55,7 +69,15 @@ class ByteStream
      */
     public function isEof(): bool
     {
-        return $this->cursor === strlen($this->contents);
+        return feof($this->handle);
+    }
+
+    /**
+     * @return bool
+     */
+    public function close(): bool
+    {
+        return fclose($this->handle);
     }
 
     /**
@@ -69,7 +91,7 @@ class ByteStream
             throw new \Exception("Cannot read value: End of stream reached at position {$this->cursor}.");
         }
 
-        $value = substr($this->contents, $this->cursor, $count);
+        $value = fread($this->handle, $count);
         $this->cursor += $count;
 
         if (strlen($value) !== $count) {
