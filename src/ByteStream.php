@@ -43,7 +43,7 @@ class ByteStream
      * @return ByteStream
      * @throws \Exception
      */
-    public static function createFromFile(string $filename, int $endianness = BinaryValue::ENDIANNESS_LITTLE_ENDIAN): ByteStream
+    public static function createFromFilename(string $filename, int $endianness = BinaryValue::ENDIANNESS_LITTLE_ENDIAN): ByteStream
     {
         $contents = file_get_contents($filename);
 
