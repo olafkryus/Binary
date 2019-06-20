@@ -1,0 +1,19 @@
+{
+  "name": "kryus/binary",
+  "license": "MIT",
+  "description": "Binary file manipulation library.",
+  "type": "library",
+  "authors": [
+    {
+      "name": "Olaf Kryus"
+    }
+  ],
+  "require": {
+    "php": "^7.1"
+  },
+  "autoload": {
+    "psr-4": {
+      "Kryus\\Binary\\": "src/"
+    }
+  }
+}
