@@ -6,9 +6,9 @@ namespace Kryus\Binary;
 use Kryus\Binary\DataType\BinaryValue;
 use Kryus\Binary\DataType\Byte;
 use Kryus\Binary\DataType\Dword;
-use Kryus\Binary\DataType\SignedByte;
-use Kryus\Binary\DataType\SignedDword;
-use Kryus\Binary\DataType\SignedWord;
+use Kryus\Binary\DataType\UnsignedByte;
+use Kryus\Binary\DataType\UnsignedDword;
+use Kryus\Binary\DataType\UnsignedWord;
 use Kryus\Binary\DataType\Word;
 
 class ByteStream
@@ -143,10 +143,10 @@ class ByteStream
 
     /**
      * @param int|null $endianness
-     * @return SignedByte
+     * @return UnsignedByte
      * @throws \Exception
      */
-    public function readSignedByte(?int $endianness = null): SignedByte
+    public function readUnsignedByte(?int $endianness = null): UnsignedByte
     {
         if (!in_array($endianness, [null, BinaryValue::ENDIANNESS_LITTLE_ENDIAN, BinaryValue::ENDIANNESS_BIG_ENDIAN], true)) {
             throw new \Exception('Invalid endianness type.');
@@ -154,7 +154,7 @@ class ByteStream
 
         $binaryValue = $this->readBytes(1);
 
-        return new SignedByte($binaryValue, $endianness ?? $this->endianness);
+        return new UnsignedByte($binaryValue, $endianness ?? $this->endianness);
     }
 
     /**
@@ -175,10 +175,10 @@ class ByteStream
 
     /**
      * @param int|null $endianness
-     * @return SignedWord
+     * @return UnsignedWord
      * @throws \Exception
      */
-    public function readSignedWord(?int $endianness = null): SignedWord
+    public function readUnsignedWord(?int $endianness = null): UnsignedWord
     {
         if (!in_array($endianness, [null, BinaryValue::ENDIANNESS_LITTLE_ENDIAN, BinaryValue::ENDIANNESS_BIG_ENDIAN], true)) {
             throw new \Exception('Invalid endianness type.');
@@ -186,7 +186,7 @@ class ByteStream
 
         $binaryValue = $this->readBytes(2);
 
-        return new SignedWord($binaryValue, $endianness ?? $this->endianness);
+        return new UnsignedWord($binaryValue, $endianness ?? $this->endianness);
     }
 
     /**
@@ -207,10 +207,10 @@ class ByteStream
 
     /**
      * @param int|null $endianness
-     * @return SignedDword
+     * @return UnsignedDword
      * @throws \Exception
      */
-    public function readSignedDword(?int $endianness = null): SignedDword
+    public function readUnsignedDword(?int $endianness = null): UnsignedDword
     {
         if (!in_array($endianness, [null, BinaryValue::ENDIANNESS_LITTLE_ENDIAN, BinaryValue::ENDIANNESS_BIG_ENDIAN], true)) {
             throw new \Exception('Invalid endianness type.');
@@ -218,6 +218,6 @@ class ByteStream
 
         $binaryValue = $this->readBytes(4);
 
-        return new SignedDword($binaryValue, $endianness ?? $this->endianness);
+        return new UnsignedDword($binaryValue, $endianness ?? $this->endianness);
     }
 }

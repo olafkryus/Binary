@@ -23,7 +23,7 @@ class BinaryValue
      * @param bool $signed
      * @throws \Exception
      */
-    public function __construct(string $value, int $endianness = self::ENDIANNESS_LITTLE_ENDIAN, bool $signed = false)
+    public function __construct(string $value, int $endianness = self::ENDIANNESS_LITTLE_ENDIAN, bool $signed = true)
     {
         if (!in_array($endianness, [self::ENDIANNESS_LITTLE_ENDIAN, self::ENDIANNESS_BIG_ENDIAN], true)) {
             throw new \Exception('Invalid endianness type.');

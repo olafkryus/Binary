@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Kryus\Binary\DataType;
 
-class SignedWord extends BinaryValue
+class UnsignedWord extends BinaryValue
 {
     /**
      * @param string $value
@@ -14,9 +14,9 @@ class SignedWord extends BinaryValue
     {
         $byteCount = strlen($value);
         if ($byteCount !== 2) {
-            throw new \Exception("Invalid byte count of {$byteCount} for value of type Signed Word.");
+            throw new \Exception("Invalid byte count of {$byteCount} for value of type Unsigned Word.");
         }
 
-        parent::__construct($value, $endianness, true);
+        parent::__construct($value, $endianness, false);
     }
 }
