@@ -56,10 +56,18 @@ class BinaryValue
     /**
      * @return int
      */
+    public function getByteCount(): int
+    {
+        return count($this->value);
+    }
+
+    /**
+     * @return int
+     */
     public function toInt(): int
     {
         $value = 0;
-        $byteCount = count($this->value);
+        $byteCount = $this->getByteCount();
 
         if ($this->endianness === self::ENDIANNESS_BIG_ENDIAN) {
             for ($i = 0; $i < $byteCount; ++$i) {
