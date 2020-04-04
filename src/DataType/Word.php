@@ -19,28 +19,4 @@ class Word extends BinaryValue
 
         parent::__construct($value, $endianness);
     }
-
-    /**
-     * @return Byte
-     * @throws \Exception
-     */
-    public function getHighByte(): Byte
-    {
-        $value = $this->__toString();
-        $endianness = $this->getEndianness();
-
-        return new Byte($value[$endianness === BinaryValue::ENDIANNESS_LITTLE_ENDIAN ? 1 : 0], $endianness);
-    }
-
-    /**
-     * @return Byte
-     * @throws \Exception
-     */
-    public function getLowByte(): Byte
-    {
-        $value = $this->__toString();
-        $endianness = $this->getEndianness();
-
-        return new Byte($value[$endianness === BinaryValue::ENDIANNESS_LITTLE_ENDIAN ? 0 : 1], $endianness);
-    }
 }

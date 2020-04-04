@@ -19,4 +19,24 @@ class UnsignedByte extends BinaryValue
 
         parent::__construct($value, $endianness, false);
     }
+
+    /**
+     * @return int
+     */
+    public function getHighNibble(): int
+    {
+        $value = $this->toInt();
+
+        return ($value >> 4) % 16;
+    }
+
+    /**
+     * @return int
+     */
+    public function getLowNibble(): int
+    {
+        $value = $this->toInt();
+
+        return $value % 16;
+    }
 }

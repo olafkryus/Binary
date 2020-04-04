@@ -19,4 +19,28 @@ class UnsignedDword extends BinaryValue
 
         parent::__construct($value, $endianness, false);
     }
+
+    /**
+     * @return UnsignedWord
+     * @throws \Exception
+     */
+    public function getHighWord(): UnsignedWord
+    {
+        $value = $this->__toString();
+        $endianness = $this->getEndianness();
+
+        return new UnsignedWord(substr($value, $endianness === BinaryValue::ENDIANNESS_LITTLE_ENDIAN ? 2 : 0, 2), $endianness);
+    }
+
+    /**
+     * @return UnsignedWord
+     * @throws \Exception
+     */
+    public function getLowWord(): UnsignedWord
+    {
+        $value = $this->__toString();
+        $endianness = $this->getEndianness();
+
+        return new UnsignedWord(substr($value, $endianness === BinaryValue::ENDIANNESS_LITTLE_ENDIAN ? 0 : 2, 2), $endianness);
+    }
 }

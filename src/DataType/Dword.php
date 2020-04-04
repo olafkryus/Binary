@@ -19,28 +19,4 @@ class Dword extends BinaryValue
 
         parent::__construct($value, $endianness);
     }
-
-    /**
-     * @return Word
-     * @throws \Exception
-     */
-    public function getHighWord(): Word
-    {
-        $value = $this->__toString();
-        $endianness = $this->getEndianness();
-
-        return new Word(substr($value, $endianness === BinaryValue::ENDIANNESS_LITTLE_ENDIAN ? 2 : 0, 2), $endianness);
-    }
-
-    /**
-     * @return Word
-     * @throws \Exception
-     */
-    public function getLowWord(): Word
-    {
-        $value = $this->__toString();
-        $endianness = $this->getEndianness();
-
-        return new Word(substr($value, $endianness === BinaryValue::ENDIANNESS_LITTLE_ENDIAN ? 0 : 2, 2), $endianness);
-    }
 }
