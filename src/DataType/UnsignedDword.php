@@ -21,6 +21,30 @@ class UnsignedDword extends BinaryValue
     }
 
     /**
+     * @return Dword
+     * @throws \Exception
+     */
+    public function asSigned(): Dword
+    {
+        return new Dword($this->__toString(), $this->getEndianness());
+    }
+
+    /**
+     * @return Dword
+     * @throws \Exception
+     */
+    public function toSigned(): Dword
+    {
+        $value = $this->asSigned();
+
+        if ($value->toInt() < 0) {
+            throw new \Exception("Value too big for type Dword.");
+        }
+
+        return $value;
+    }
+
+    /**
      * @return UnsignedWord
      * @throws \Exception
      */

@@ -19,4 +19,26 @@ class Dword extends BinaryValue
 
         parent::__construct($value, $endianness);
     }
+
+    /**
+     * @return UnsignedDword
+     * @throws \Exception
+     */
+    public function asUnsigned(): UnsignedDword
+    {
+        return new UnsignedDword($this->__toString(), $this->getEndianness());
+    }
+
+    /**
+     * @return UnsignedDword
+     * @throws \Exception
+     */
+    public function toUnsigned(): UnsignedDword
+    {
+        if ($this->toInt() < 0) {
+            throw new \Exception("Value too small for type Unsigned Dword.");
+        }
+
+        return $this->asUnsigned();
+    }
 }

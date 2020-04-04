@@ -19,4 +19,26 @@ class Word extends BinaryValue
 
         parent::__construct($value, $endianness);
     }
+
+    /**
+     * @return UnsignedWord
+     * @throws \Exception
+     */
+    public function asUnsigned(): UnsignedWord
+    {
+        return new UnsignedWord($this->__toString(), $this->getEndianness());
+    }
+
+    /**
+     * @return UnsignedWord
+     * @throws \Exception
+     */
+    public function toUnsigned(): UnsignedWord
+    {
+        if ($this->toInt() < 0) {
+            throw new \Exception("Value too small for type Unsigned Word.");
+        }
+
+        return $this->asUnsigned();
+    }
 }

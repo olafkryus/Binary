@@ -19,4 +19,26 @@ class Byte extends BinaryValue
 
         parent::__construct($value, $endianness);
     }
+
+    /**
+     * @return UnsignedByte
+     * @throws \Exception
+     */
+    public function asUnsigned(): UnsignedByte
+    {
+        return new UnsignedByte($this->__toString(), $this->getEndianness());
+    }
+
+    /**
+     * @return UnsignedByte
+     * @throws \Exception
+     */
+    public function toUnsigned(): UnsignedByte
+    {
+        if ($this->toInt() < 0) {
+            throw new \Exception("Value too small for type Unsigned Byte.");
+        }
+
+        return $this->asUnsigned();
+    }
 }

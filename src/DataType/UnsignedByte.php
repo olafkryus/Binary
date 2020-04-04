@@ -21,6 +21,30 @@ class UnsignedByte extends BinaryValue
     }
 
     /**
+     * @return Byte
+     * @throws \Exception
+     */
+    public function asSigned(): Byte
+    {
+        return new Byte($this->__toString(), $this->getEndianness());
+    }
+
+    /**
+     * @return Byte
+     * @throws \Exception
+     */
+    public function toSigned(): Byte
+    {
+        $value = $this->asSigned();
+
+        if ($value->toInt() < 0) {
+            throw new \Exception("Value too big for type Byte.");
+        }
+
+        return $value;
+    }
+
+    /**
      * @return int
      */
     public function getHighNibble(): int
