@@ -36,6 +36,20 @@ class BinaryValueTest extends TestCase
         new BinaryValue(' ', 2);
     }
 
+    /**
+     * @dataProvider intValueTestProvider
+     */
+    public function testDoesReturnCorrectIntValue(
+        string $value,
+        int $endianness,
+        bool $signed,
+        int $expectedValue
+    ): void {
+        $value = new BinaryValue($value, $endianness, $signed);
+
+        self::assertSame($expectedValue, $value->toInt());
+    }
+
     public function signednessProvider(): array
     {
         return [
@@ -49,6 +63,23 @@ class BinaryValueTest extends TestCase
         return [
             'little endian' => [Endianness::ENDIANNESS_LITTLE_ENDIAN],
             'big endian' => [Endianness::ENDIANNESS_BIG_ENDIAN],
+        ];
+    }
+
+    public function intValueTestProvider(): array
+    {
+        $x80 = chr(0x80);
+        $x8081 = chr(0x80) . chr(0x81);
+
+        return [
+            '1-byte little endian signed' => [$x80, Endianness::ENDIANNESS_LITTLE_ENDIAN, true, -0x7F - 1],
+            '1-byte big endian signed' => [$x80, Endianness::ENDIANNESS_BIG_ENDIAN, true, -0x7F - 1],
+            '1-byte little endian unsigned' => [$x80, Endianness::ENDIANNESS_LITTLE_ENDIAN, false, 0x80],
+            '1-byte big endian unsigned' => [$x80, Endianness::ENDIANNESS_BIG_ENDIAN, false, 0x80],
+            '2-byte little endian signed' => [$x8081, Endianness::ENDIANNESS_LITTLE_ENDIAN, true, -0x7E7F - 1],
+            '2-byte big endian signed' => [$x8081, Endianness::ENDIANNESS_BIG_ENDIAN, true, -0x7F7E - 1],
+            '2-byte little endian unsigned' => [$x8081, Endianness::ENDIANNESS_LITTLE_ENDIAN, false, 0x8180],
+            '2-byte big endian unsigned' => [$x8081, Endianness::ENDIANNESS_BIG_ENDIAN, false, 0x8081],
         ];
     }
 }
