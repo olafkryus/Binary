@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace Kryus\Binary\DataType;
 
+use Kryus\Binary\Enum\Endianness;
+
 class UnsignedDword extends BinaryValue
 {
     /**
@@ -10,7 +12,7 @@ class UnsignedDword extends BinaryValue
      * @param int $endianness
      * @throws \Exception
      */
-    public function __construct(string $value, int $endianness = BinaryValue::ENDIANNESS_LITTLE_ENDIAN)
+    public function __construct(string $value, int $endianness = Endianness::ENDIANNESS_LITTLE_ENDIAN)
     {
         $byteCount = strlen($value);
         if ($byteCount !== 4) {
@@ -53,7 +55,7 @@ class UnsignedDword extends BinaryValue
         $value = $this->__toString();
         $endianness = $this->getEndianness();
 
-        return new UnsignedWord(substr($value, $endianness === BinaryValue::ENDIANNESS_LITTLE_ENDIAN ? 2 : 0, 2), $endianness);
+        return new UnsignedWord(substr($value, $endianness === Endianness::ENDIANNESS_LITTLE_ENDIAN ? 2 : 0, 2), $endianness);
     }
 
     /**
@@ -65,6 +67,6 @@ class UnsignedDword extends BinaryValue
         $value = $this->__toString();
         $endianness = $this->getEndianness();
 
-        return new UnsignedWord(substr($value, $endianness === BinaryValue::ENDIANNESS_LITTLE_ENDIAN ? 0 : 2, 2), $endianness);
+        return new UnsignedWord(substr($value, $endianness === Endianness::ENDIANNESS_LITTLE_ENDIAN ? 0 : 2, 2), $endianness);
     }
 }

@@ -3,13 +3,13 @@ declare(strict_types=1);
 
 namespace Kryus\Binary;
 
-use Kryus\Binary\DataType\BinaryValue;
 use Kryus\Binary\DataType\Byte;
 use Kryus\Binary\DataType\Dword;
 use Kryus\Binary\DataType\UnsignedByte;
 use Kryus\Binary\DataType\UnsignedDword;
 use Kryus\Binary\DataType\UnsignedWord;
 use Kryus\Binary\DataType\Word;
+use Kryus\Binary\Enum\Endianness;
 
 class ByteStream
 {
@@ -30,9 +30,9 @@ class ByteStream
      * @param int $endianness
      * @throws \Exception
      */
-    public function __construct($handle, int $endianness = BinaryValue::ENDIANNESS_LITTLE_ENDIAN)
+    public function __construct($handle, int $endianness = Endianness::ENDIANNESS_LITTLE_ENDIAN)
     {
-        if (!in_array($endianness, [BinaryValue::ENDIANNESS_LITTLE_ENDIAN, BinaryValue::ENDIANNESS_BIG_ENDIAN], true)) {
+        if (!in_array($endianness, [Endianness::ENDIANNESS_LITTLE_ENDIAN, Endianness::ENDIANNESS_LITTLE_ENDIAN], true)) {
             throw new \Exception('Invalid endianness type.');
         }
 
@@ -54,7 +54,7 @@ class ByteStream
      * @return ByteStream
      * @throws \Exception
      */
-    public static function createFromFilename(string $filename, string $mode, int $endianness = BinaryValue::ENDIANNESS_LITTLE_ENDIAN): ByteStream
+    public static function createFromFilename(string $filename, string $mode, int $endianness = Endianness::ENDIANNESS_LITTLE_ENDIAN): ByteStream
     {
         $handle = fopen($filename, $mode);
 
@@ -132,7 +132,7 @@ class ByteStream
      */
     public function readByte(?int $endianness = null): Byte
     {
-        if (!in_array($endianness, [null, BinaryValue::ENDIANNESS_LITTLE_ENDIAN, BinaryValue::ENDIANNESS_BIG_ENDIAN], true)) {
+        if (!in_array($endianness, [null, Endianness::ENDIANNESS_LITTLE_ENDIAN, Endianness::ENDIANNESS_LITTLE_ENDIAN], true)) {
             throw new \Exception('Invalid endianness type.');
         }
 
@@ -148,7 +148,7 @@ class ByteStream
      */
     public function readUnsignedByte(?int $endianness = null): UnsignedByte
     {
-        if (!in_array($endianness, [null, BinaryValue::ENDIANNESS_LITTLE_ENDIAN, BinaryValue::ENDIANNESS_BIG_ENDIAN], true)) {
+        if (!in_array($endianness, [null, Endianness::ENDIANNESS_LITTLE_ENDIAN, Endianness::ENDIANNESS_LITTLE_ENDIAN], true)) {
             throw new \Exception('Invalid endianness type.');
         }
 
@@ -164,7 +164,7 @@ class ByteStream
      */
     public function readWord(?int $endianness = null): Word
     {
-        if (!in_array($endianness, [null, BinaryValue::ENDIANNESS_LITTLE_ENDIAN, BinaryValue::ENDIANNESS_BIG_ENDIAN], true)) {
+        if (!in_array($endianness, [null, Endianness::ENDIANNESS_LITTLE_ENDIAN, Endianness::ENDIANNESS_LITTLE_ENDIAN], true)) {
             throw new \Exception('Invalid endianness type.');
         }
 
@@ -180,7 +180,7 @@ class ByteStream
      */
     public function readUnsignedWord(?int $endianness = null): UnsignedWord
     {
-        if (!in_array($endianness, [null, BinaryValue::ENDIANNESS_LITTLE_ENDIAN, BinaryValue::ENDIANNESS_BIG_ENDIAN], true)) {
+        if (!in_array($endianness, [null, Endianness::ENDIANNESS_LITTLE_ENDIAN, Endianness::ENDIANNESS_LITTLE_ENDIAN], true)) {
             throw new \Exception('Invalid endianness type.');
         }
 
@@ -196,7 +196,7 @@ class ByteStream
      */
     public function readDword(?int $endianness = null): Dword
     {
-        if (!in_array($endianness, [null, BinaryValue::ENDIANNESS_LITTLE_ENDIAN, BinaryValue::ENDIANNESS_BIG_ENDIAN], true)) {
+        if (!in_array($endianness, [null, Endianness::ENDIANNESS_LITTLE_ENDIAN, Endianness::ENDIANNESS_LITTLE_ENDIAN], true)) {
             throw new \Exception('Invalid endianness type.');
         }
 
@@ -212,7 +212,7 @@ class ByteStream
      */
     public function readUnsignedDword(?int $endianness = null): UnsignedDword
     {
-        if (!in_array($endianness, [null, BinaryValue::ENDIANNESS_LITTLE_ENDIAN, BinaryValue::ENDIANNESS_BIG_ENDIAN], true)) {
+        if (!in_array($endianness, [null, Endianness::ENDIANNESS_LITTLE_ENDIAN, Endianness::ENDIANNESS_LITTLE_ENDIAN], true)) {
             throw new \Exception('Invalid endianness type.');
         }
 

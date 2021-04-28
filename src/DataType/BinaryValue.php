@@ -3,11 +3,10 @@ declare(strict_types=1);
 
 namespace Kryus\Binary\DataType;
 
+use Kryus\Binary\Enum\Endianness;
+
 class BinaryValue
 {
-    public const ENDIANNESS_LITTLE_ENDIAN = 0;
-    public const ENDIANNESS_BIG_ENDIAN = 1;
-
     /** @var int[] */
     private $value;
 
@@ -23,9 +22,9 @@ class BinaryValue
      * @param bool $signed
      * @throws \Exception
      */
-    public function __construct(string $value, int $endianness = self::ENDIANNESS_LITTLE_ENDIAN, bool $signed = true)
+    public function __construct(string $value, int $endianness = Endianness::ENDIANNESS_LITTLE_ENDIAN, bool $signed = true)
     {
-        if (!in_array($endianness, [self::ENDIANNESS_LITTLE_ENDIAN, self::ENDIANNESS_BIG_ENDIAN], true)) {
+        if (!in_array($endianness, [Endianness::ENDIANNESS_LITTLE_ENDIAN, Endianness::ENDIANNESS_LITTLE_ENDIAN], true)) {
             throw new \Exception('Invalid endianness type.');
         }
 
@@ -69,7 +68,7 @@ class BinaryValue
         $value = 0;
         $byteCount = $this->getByteCount();
 
-        if ($this->endianness === self::ENDIANNESS_BIG_ENDIAN) {
+        if ($this->endianness === Endianness::ENDIANNESS_BIG_ENDIAN) {
             for ($i = 0; $i < $byteCount; ++$i) {
                 $value *= 256;
                 $value += $this->value[$i];
