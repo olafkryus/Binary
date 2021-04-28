@@ -18,5 +18,10 @@
     "psr-4": {
       "Kryus\\Binary\\": "src/"
     }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Kryus\\Binary\\Tests\\": "tests/"
+    }
   }
 }
