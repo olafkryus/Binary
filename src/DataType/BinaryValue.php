@@ -24,7 +24,7 @@ class BinaryValue
      */
     public function __construct(string $value, int $endianness = Endianness::ENDIANNESS_LITTLE_ENDIAN, bool $signed = true)
     {
-        if (!in_array($endianness, [Endianness::ENDIANNESS_LITTLE_ENDIAN, Endianness::ENDIANNESS_LITTLE_ENDIAN], true)) {
+        if (!Endianness::isValid($endianness)) {
             throw new \Exception('Invalid endianness type.');
         }
 
