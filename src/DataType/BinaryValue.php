@@ -84,7 +84,7 @@ class BinaryValue
             $maxSignedValue = (1 << (8 * $byteCount - 1)) - 1;
 
             if ($value > $maxSignedValue) {
-                $value = ($maxSignedValue + 1) * 2 - $value;
+                $value -= ($maxSignedValue + 1) * 2;
             }
         }
 
