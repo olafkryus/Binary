@@ -44,6 +44,14 @@ class BinaryValueTest extends TestCase
         self::assertSame($expectedValue, $value->toInt());
     }
 
+    /**
+     * @dataProvider hexValueTestProvider
+     */
+    public function testDoesReturnCorrectHexValue(BinaryValue $value, string $expectedValue): void
+    {
+        self::assertSame($expectedValue, $value->toHex());
+    }
+
     public function signednessProvider(): array
     {
         return [
@@ -99,6 +107,38 @@ class BinaryValueTest extends TestCase
             '4-byte big endian signed' => 0x00008081,
             '4-byte little endian unsigned' => 0x81800000,
             '4-byte big endian unsigned' => 0x00008081,
+        ];
+
+        return array_map(
+            static function ($value, $key) use ($expectedValues) {
+                return [$value, $expectedValues[$key]];
+            },
+            $values,
+            array_keys($values)
+        );
+    }
+
+    public function hexValueTestProvider(): array
+    {
+        $values = $this->getValueTestSet();
+
+        $_80 = '80';
+        $_8081 = '8081';
+        $_00008081 = '00008081';
+
+        $expectedValues = [
+            '1-byte little endian signed' => $_80,
+            '1-byte big endian signed' => $_80,
+            '1-byte little endian unsigned' => $_80,
+            '1-byte big endian unsigned' => $_80,
+            '2-byte little endian signed' => $_8081,
+            '2-byte big endian signed' => $_8081,
+            '2-byte little endian unsigned' => $_8081,
+            '2-byte big endian unsigned' => $_8081,
+            '4-byte little endian signed' => $_00008081,
+            '4-byte big endian signed' => $_00008081,
+            '4-byte little endian unsigned' => $_00008081,
+            '4-byte big endian unsigned' => $_00008081,
         ];
 
         return array_map(
