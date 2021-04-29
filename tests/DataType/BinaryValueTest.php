@@ -60,6 +60,14 @@ class BinaryValueTest extends TestCase
         self::assertSame($expectedValue, $value->toBin());
     }
 
+    /**
+     * @dataProvider stringValueTestProvider
+     */
+    public function testDoesReturnCorrectStringValue(BinaryValue $value, string $expectedValue): void
+    {
+        self::assertSame($expectedValue, (string)$value);
+    }
+
     public function signednessProvider(): array
     {
         return [
@@ -179,6 +187,38 @@ class BinaryValueTest extends TestCase
             '4-byte big endian signed' => $_00008081,
             '4-byte little endian unsigned' => $_00008081,
             '4-byte big endian unsigned' => $_00008081,
+        ];
+
+        return array_map(
+            static function ($value, $key) use ($expectedValues) {
+                return [$value, $expectedValues[$key]];
+            },
+            $values,
+            array_keys($values)
+        );
+    }
+
+    public function stringValueTestProvider(): array
+    {
+        $values = $this->getValueTestSet();
+
+        $x80 = chr(0x80);
+        $x8081 = chr(0x80) . chr(0x81);
+        $x00008081 = chr(0x00) . chr(0x00) . chr(0x80) . chr(0x81);
+
+        $expectedValues = [
+            '1-byte little endian signed' => $x80,
+            '1-byte big endian signed' => $x80,
+            '1-byte little endian unsigned' => $x80,
+            '1-byte big endian unsigned' => $x80,
+            '2-byte little endian signed' => $x8081,
+            '2-byte big endian signed' => $x8081,
+            '2-byte little endian unsigned' => $x8081,
+            '2-byte big endian unsigned' => $x8081,
+            '4-byte little endian signed' => $x00008081,
+            '4-byte big endian signed' => $x00008081,
+            '4-byte little endian unsigned' => $x00008081,
+            '4-byte big endian unsigned' => $x00008081,
         ];
 
         return array_map(
