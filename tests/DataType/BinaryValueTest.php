@@ -70,6 +70,7 @@ class BinaryValueTest extends TestCase
     {
         $x80 = chr(0x80);
         $x8081 = chr(0x80) . chr(0x81);
+        $x00008081 = chr(0x00) . chr(0x00) . chr(0x80) . chr(0x81);
 
         return [
             '1-byte little endian signed' => [$x80, Endianness::ENDIANNESS_LITTLE_ENDIAN, true, -0x7F - 1],
@@ -80,6 +81,10 @@ class BinaryValueTest extends TestCase
             '2-byte big endian signed' => [$x8081, Endianness::ENDIANNESS_BIG_ENDIAN, true, -0x7F7E - 1],
             '2-byte little endian unsigned' => [$x8081, Endianness::ENDIANNESS_LITTLE_ENDIAN, false, 0x8180],
             '2-byte big endian unsigned' => [$x8081, Endianness::ENDIANNESS_BIG_ENDIAN, false, 0x8081],
+            '4-byte little endian signed' => [$x00008081, Endianness::ENDIANNESS_LITTLE_ENDIAN, true, -0x7E7FFFFF - 1],
+            '4-byte big endian signed' => [$x00008081, Endianness::ENDIANNESS_BIG_ENDIAN, true, 0x00008081],
+            '4-byte little endian unsigned' => [$x00008081, Endianness::ENDIANNESS_LITTLE_ENDIAN, false, 0x81800000],
+            '4-byte big endian unsigned' => [$x00008081, Endianness::ENDIANNESS_BIG_ENDIAN, false, 0x00008081],
         ];
     }
 }
