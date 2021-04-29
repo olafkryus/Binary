@@ -52,6 +52,14 @@ class BinaryValueTest extends TestCase
         self::assertSame($expectedValue, $value->toHex());
     }
 
+    /**
+     * @dataProvider binValueTestProvider
+     */
+    public function testDoesReturnCorrectBinValue(BinaryValue $value, string $expectedValue): void
+    {
+        self::assertSame($expectedValue, $value->toBin());
+    }
+
     public function signednessProvider(): array
     {
         return [
@@ -125,6 +133,38 @@ class BinaryValueTest extends TestCase
         $_80 = '80';
         $_8081 = '8081';
         $_00008081 = '00008081';
+
+        $expectedValues = [
+            '1-byte little endian signed' => $_80,
+            '1-byte big endian signed' => $_80,
+            '1-byte little endian unsigned' => $_80,
+            '1-byte big endian unsigned' => $_80,
+            '2-byte little endian signed' => $_8081,
+            '2-byte big endian signed' => $_8081,
+            '2-byte little endian unsigned' => $_8081,
+            '2-byte big endian unsigned' => $_8081,
+            '4-byte little endian signed' => $_00008081,
+            '4-byte big endian signed' => $_00008081,
+            '4-byte little endian unsigned' => $_00008081,
+            '4-byte big endian unsigned' => $_00008081,
+        ];
+
+        return array_map(
+            static function ($value, $key) use ($expectedValues) {
+                return [$value, $expectedValues[$key]];
+            },
+            $values,
+            array_keys($values)
+        );
+    }
+
+    public function binValueTestProvider(): array
+    {
+        $values = $this->getValueTestSet();
+
+        $_80 = '10000000';
+        $_8081 = '10000000' . '10000001';
+        $_00008081 = '00000000' . '00000000' . '10000000' . '10000001';
 
         $expectedValues = [
             '1-byte little endian signed' => $_80,
