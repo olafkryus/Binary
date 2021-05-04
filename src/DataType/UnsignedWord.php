@@ -7,6 +7,8 @@ use Kryus\Binary\Enum\Endianness;
 
 class UnsignedWord extends BinaryValue
 {
+    use UnsignedValueTrait;
+
     /**
      * @param string $value
      * @param int $endianness
