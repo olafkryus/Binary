@@ -5,7 +5,7 @@ namespace Kryus\Binary\DataType;
 
 use Kryus\Binary\Enum\Endianness;
 
-class Dword extends BinaryValue
+class Dword extends NumericValue
 {
     use SignedValueTrait;
 
