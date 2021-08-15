@@ -1,14 +1,14 @@
 <?php
 declare(strict_types=1);
 
-namespace Kryus\Binary\DataType;
+namespace Kryus\Binary\DataType\Int;
 
-trait UnsignedValueTrait
+trait SignedValueTrait
 {
     /**
      * @return static
      */
-    public function asUnsigned()
+    public function asSigned()
     {
         return clone $this;
     }
@@ -16,7 +16,7 @@ trait UnsignedValueTrait
     /**
      * @return static
      */
-    public function toUnsigned()
+    public function toSigned()
     {
         return clone $this;
     }

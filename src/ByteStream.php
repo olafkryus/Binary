@@ -3,12 +3,12 @@ declare(strict_types=1);
 
 namespace Kryus\Binary;
 
-use Kryus\Binary\DataType\Byte;
-use Kryus\Binary\DataType\Dword;
-use Kryus\Binary\DataType\UnsignedByte;
-use Kryus\Binary\DataType\UnsignedDword;
-use Kryus\Binary\DataType\UnsignedWord;
-use Kryus\Binary\DataType\Word;
+use Kryus\Binary\DataType\Int\Byte;
+use Kryus\Binary\DataType\Int\Dword;
+use Kryus\Binary\DataType\Int\UnsignedByte;
+use Kryus\Binary\DataType\Int\UnsignedDword;
+use Kryus\Binary\DataType\Int\UnsignedWord;
+use Kryus\Binary\DataType\Int\Word;
 use Kryus\Binary\Enum\Endianness;
 
 class ByteStream

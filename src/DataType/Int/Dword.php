@@ -1,8 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace Kryus\Binary\DataType;
+namespace Kryus\Binary\DataType\Int;
 
+use Kryus\Binary\DataType\NumericValue;
 use Kryus\Binary\Enum\Endianness;
 
 class Dword extends NumericValue

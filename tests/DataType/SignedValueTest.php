@@ -4,10 +4,10 @@ declare(strict_types=1);
 namespace Kryus\Binary\Tests\DataType;
 
 use Kryus\Binary\DataType\BinaryValue;
-use Kryus\Binary\DataType\Byte;
-use Kryus\Binary\DataType\Dword;
-use Kryus\Binary\DataType\SignedValueTrait;
-use Kryus\Binary\DataType\Word;
+use Kryus\Binary\DataType\Int\Byte;
+use Kryus\Binary\DataType\Int\Dword;
+use Kryus\Binary\DataType\Int\Word;
+use Kryus\Binary\DataType\Int\SignedValueTrait;
 use Kryus\Binary\Enum\Endianness;
 use PHPUnit\Framework\TestCase;
 
