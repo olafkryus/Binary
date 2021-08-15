@@ -7,6 +7,29 @@ use Kryus\Binary\Enum\Endianness;
 
 class IntegerValue extends NumericValue implements IntegerValueInterface
 {
+    private $signed;
+
+    /**
+     * @param string $value
+     * @param int $endianness
+     * @param bool $signed
+     * @throws \Exception
+     */
+    public function __construct(string $value, int $endianness = Endianness::ENDIANNESS_LITTLE_ENDIAN, bool $signed = true)
+    {
+        parent::__construct($value, $endianness);
+
+        $this->signed = $signed;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isSigned(): bool
+    {
+        return $this->signed;
+    }
+
     /**
      * @return int
      */

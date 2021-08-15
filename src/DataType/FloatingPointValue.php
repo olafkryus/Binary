@@ -5,6 +5,11 @@ namespace Kryus\Binary\DataType;
 
 class FloatingPointValue extends NumericValue implements FloatingPointValueInterface
 {
+    public function isSigned(): bool
+    {
+        return true;
+    }
+
     /**
      * @return float
      */

@@ -5,21 +5,17 @@ namespace Kryus\Binary\DataType;
 
 use Kryus\Binary\Enum\Endianness;
 
-class NumericValue extends BinaryValue implements NumericValueInterface
+abstract class NumericValue extends BinaryValue implements NumericValueInterface
 {
     /** @var int */
     private $endianness;
 
-    /** @var bool */
-    private $signed;
-
     /**
      * @param string $value
      * @param int $endianness
-     * @param bool $signed
      * @throws \Exception
      */
-    public function __construct(string $value, int $endianness = Endianness::ENDIANNESS_LITTLE_ENDIAN, bool $signed = true)
+    public function __construct(string $value, int $endianness = Endianness::ENDIANNESS_LITTLE_ENDIAN)
     {
         parent::__construct($value);
 
@@ -28,7 +24,6 @@ class NumericValue extends BinaryValue implements NumericValueInterface
         }
 
         $this->endianness = $endianness;
-        $this->signed = $signed;
     }
 
     /**
@@ -42,8 +37,5 @@ class NumericValue extends BinaryValue implements NumericValueInterface
     /**
      * @return bool
      */
-    public function isSigned(): bool
-    {
-        return $this->signed;
-    }
+    abstract public function isSigned(): bool;
 }

@@ -3,18 +3,18 @@ declare(strict_types=1);
 
 namespace Kryus\Binary\Tests\DataType;
 
-use Kryus\Binary\DataType\NumericValue;
+use Kryus\Binary\DataType\IntegerValue;
 use Kryus\Binary\Enum\Endianness;
 use PHPUnit\Framework\TestCase;
 
-class NumericValueTest extends TestCase
+class IntegerValueTest extends TestCase
 {
     /**
      * @dataProvider signednessProvider
      */
     public function testDoesReturnCorrectSignedness(bool $signedness): void
     {
-        $value = new NumericValue(' ', Endianness::ENDIANNESS_LITTLE_ENDIAN, $signedness);
+        $value = new IntegerValue(' ', Endianness::ENDIANNESS_LITTLE_ENDIAN, $signedness);
 
         self::assertSame($signedness, $value->isSigned());
     }
@@ -24,7 +24,7 @@ class NumericValueTest extends TestCase
      */
     public function testDoesReturnCorrectEndianness(int $endianness): void
     {
-        $value = new NumericValue(' ', $endianness);
+        $value = new IntegerValue(' ', $endianness);
 
         self::assertSame($endianness, $value->getEndianness());
     }
@@ -33,13 +33,13 @@ class NumericValueTest extends TestCase
     {
         $this->expectException(\Exception::class);
 
-        new NumericValue(' ', 2);
+        new IntegerValue(' ', 2);
     }
 
     /**
      * @dataProvider intValueTestProvider
      */
-    public function testDoesReturnCorrectIntValue(NumericValue $value, int $expectedValue): void
+    public function testDoesReturnCorrectIntValue(IntegerValue $value, int $expectedValue): void
     {
         self::assertSame($expectedValue, $value->toInt());
     }
@@ -67,18 +67,18 @@ class NumericValueTest extends TestCase
         $x00008081 = chr(0x00) . chr(0x00) . chr(0x80) . chr(0x81);
 
         return [
-            '1-byte little endian signed' => new NumericValue($x80, Endianness::ENDIANNESS_LITTLE_ENDIAN, true),
-            '1-byte big endian signed' => new NumericValue($x80, Endianness::ENDIANNESS_BIG_ENDIAN, true),
-            '1-byte little endian unsigned' => new NumericValue($x80, Endianness::ENDIANNESS_LITTLE_ENDIAN, false),
-            '1-byte big endian unsigned' => new NumericValue($x80, Endianness::ENDIANNESS_BIG_ENDIAN, false),
-            '2-byte little endian signed' => new NumericValue($x8081, Endianness::ENDIANNESS_LITTLE_ENDIAN, true),
-            '2-byte big endian signed' => new NumericValue($x8081, Endianness::ENDIANNESS_BIG_ENDIAN, true),
-            '2-byte little endian unsigned' => new NumericValue($x8081, Endianness::ENDIANNESS_LITTLE_ENDIAN, false),
-            '2-byte big endian unsigned' => new NumericValue($x8081, Endianness::ENDIANNESS_BIG_ENDIAN, false),
-            '4-byte little endian signed' => new NumericValue($x00008081, Endianness::ENDIANNESS_LITTLE_ENDIAN, true),
-            '4-byte big endian signed' => new NumericValue($x00008081, Endianness::ENDIANNESS_BIG_ENDIAN, true),
-            '4-byte little endian unsigned' => new NumericValue($x00008081, Endianness::ENDIANNESS_LITTLE_ENDIAN, false),
-            '4-byte big endian unsigned' => new NumericValue($x00008081, Endianness::ENDIANNESS_BIG_ENDIAN, false),
+            '1-byte little endian signed' => new IntegerValue($x80, Endianness::ENDIANNESS_LITTLE_ENDIAN, true),
+            '1-byte big endian signed' => new IntegerValue($x80, Endianness::ENDIANNESS_BIG_ENDIAN, true),
+            '1-byte little endian unsigned' => new IntegerValue($x80, Endianness::ENDIANNESS_LITTLE_ENDIAN, false),
+            '1-byte big endian unsigned' => new IntegerValue($x80, Endianness::ENDIANNESS_BIG_ENDIAN, false),
+            '2-byte little endian signed' => new IntegerValue($x8081, Endianness::ENDIANNESS_LITTLE_ENDIAN, true),
+            '2-byte big endian signed' => new IntegerValue($x8081, Endianness::ENDIANNESS_BIG_ENDIAN, true),
+            '2-byte little endian unsigned' => new IntegerValue($x8081, Endianness::ENDIANNESS_LITTLE_ENDIAN, false),
+            '2-byte big endian unsigned' => new IntegerValue($x8081, Endianness::ENDIANNESS_BIG_ENDIAN, false),
+            '4-byte little endian signed' => new IntegerValue($x00008081, Endianness::ENDIANNESS_LITTLE_ENDIAN, true),
+            '4-byte big endian signed' => new IntegerValue($x00008081, Endianness::ENDIANNESS_BIG_ENDIAN, true),
+            '4-byte little endian unsigned' => new IntegerValue($x00008081, Endianness::ENDIANNESS_LITTLE_ENDIAN, false),
+            '4-byte big endian unsigned' => new IntegerValue($x00008081, Endianness::ENDIANNESS_BIG_ENDIAN, false),
         ];
     }
 
