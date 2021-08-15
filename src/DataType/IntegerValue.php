@@ -5,7 +5,7 @@ namespace Kryus\Binary\DataType;
 
 use Kryus\Binary\Enum\Endianness;
 
-class IntegerValue extends NumericValue
+class IntegerValue extends NumericValue implements IntegerValueInterface
 {
     /**
      * @return int

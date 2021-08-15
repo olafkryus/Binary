@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Kryus\Binary\DataType;
 
-class BinaryValue
+class BinaryValue implements BinaryValueInterface
 {
     /** @var int[] */
     private $value;

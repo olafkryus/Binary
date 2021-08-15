@@ -3,10 +3,13 @@ declare(strict_types=1);
 
 namespace Kryus\Binary\DataType;
 
-/**
- * TODO: Stub
- */
-class FloatingPointValue extends NumericValue
+class FloatingPointValue extends NumericValue implements FloatingPointValueInterface
 {
-
+    /**
+     * @return float
+     */
+    public function toFloat(): float
+    {
+        // TODO: Implement toFloat() method.
+    }
 }
