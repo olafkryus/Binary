@@ -3,10 +3,10 @@ declare(strict_types=1);
 
 namespace Kryus\Binary\DataType\Int;
 
-use Kryus\Binary\DataType\NumericValue;
+use Kryus\Binary\DataType\IntegerValue;
 use Kryus\Binary\Enum\Endianness;
 
-class Byte extends NumericValue
+class Byte extends IntegerValue
 {
     use SignedValueTrait;
 

@@ -3,10 +3,10 @@ declare(strict_types=1);
 
 namespace Kryus\Binary\DataType\Int;
 
-use Kryus\Binary\DataType\NumericValue;
+use Kryus\Binary\DataType\IntegerValue;
 use Kryus\Binary\Enum\Endianness;
 
-class UnsignedByte extends NumericValue
+class UnsignedByte extends IntegerValue
 {
     use UnsignedValueTrait;
 
