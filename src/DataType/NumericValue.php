@@ -46,39 +46,4 @@ class NumericValue extends BinaryValue
     {
         return $this->signed;
     }
-
-    /**
-     * @return int
-     */
-    public function toInt(): int
-    {
-        $value = 0;
-        $byteCount = $this->getByteCount();
-        $bytes = array_map(
-            'ord',
-            str_split($this->__toString())
-        );
-
-        if ($this->endianness === Endianness::ENDIANNESS_BIG_ENDIAN) {
-            for ($i = 0; $i < $byteCount; ++$i) {
-                $value *= 256;
-                $value += $bytes[$i];
-            }
-        } else {
-            for ($i = $byteCount - 1; $i >= 0; --$i) {
-                $value *= 256;
-                $value += $bytes[$i];
-            }
-        }
-
-        if ($this->signed) {
-            $maxSignedValue = (1 << (8 * $byteCount - 1)) - 1;
-
-            if ($value > $maxSignedValue) {
-                $value -= ($maxSignedValue + 1) * 2;
-            }
-        }
-
-        return $value;
-    }
 }
