@@ -38,4 +38,9 @@ abstract class NumericValue extends BinaryValue implements NumericValueInterface
      * @return bool
      */
     abstract public function isSigned(): bool;
+
+    /**
+     * @return bool
+     */
+    abstract public function isNegative(): bool;
 }

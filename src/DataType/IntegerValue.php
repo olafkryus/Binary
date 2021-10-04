@@ -34,6 +34,14 @@ class IntegerValue extends NumericValue implements IntegerValueInterface
     }
 
     /**
+     * @return bool
+     */
+    public function isNegative(): bool
+    {
+        return $this->toInt() < 0;
+    }
+
+    /**
      * @return int
      */
     public function toInt(): int
@@ -109,7 +117,7 @@ class IntegerValue extends NumericValue implements IntegerValueInterface
      */
     public function toUnsigned(): UnsignedValueInterface
     {
-        if ($this->toInt() < 0) {
+        if ($this->isNegative()) {
             throw new \Exception("Value too small for type.");
         }
 

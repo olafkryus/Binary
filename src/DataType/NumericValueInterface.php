@@ -14,4 +14,9 @@ interface NumericValueInterface extends BinaryValueInterface
      * @return bool
      */
     public function isSigned(): bool;
+
+    /**
+     * @return bool
+     */
+    public function isNegative(): bool;
 }

@@ -40,7 +40,7 @@ class Byte extends IntegerValue implements ByteInterface, SignedValueInterface
      */
     public function toUnsigned(): UnsignedByte
     {
-        if ($this->toInt() < 0) {
+        if ($this->isNegative()) {
             throw new \Exception("Value too small for type Unsigned Byte.");
         }
 

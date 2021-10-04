@@ -40,7 +40,7 @@ class Dword extends IntegerValue implements DwordInterface, SignedValueInterface
      */
     public function toUnsigned(): UnsignedDword
     {
-        if ($this->toInt() < 0) {
+        if ($this->isNegative()) {
             throw new \Exception("Value too small for type Unsigned Dword.");
         }
 

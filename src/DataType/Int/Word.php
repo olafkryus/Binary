@@ -40,7 +40,7 @@ class Word extends IntegerValue implements WordInterface, SignedValueInterface
      */
     public function toUnsigned(): UnsignedWord
     {
-        if ($this->toInt() < 0) {
+        if ($this->isNegative()) {
             throw new \Exception("Value too small for type Unsigned Word.");
         }
 

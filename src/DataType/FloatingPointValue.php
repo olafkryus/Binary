@@ -14,6 +14,14 @@ class FloatingPointValue extends NumericValue implements FloatingPointValueInter
     }
 
     /**
+     * @return bool
+     */
+    public function isNegative(): bool
+    {
+        // TODO: Implement isNegative() method.
+    }
+
+    /**
      * @return float
      */
     public function toFloat(): float
