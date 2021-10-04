@@ -6,7 +6,7 @@ namespace Kryus\Binary\DataType\Int;
 use Kryus\Binary\DataType\IntegerValue;
 use Kryus\Binary\Enum\Endianness;
 
-class Byte extends IntegerValue
+class Byte extends IntegerValue implements ByteInterface, SignedValueInterface
 {
     use SignedValueTrait;
 
@@ -18,11 +18,11 @@ class Byte extends IntegerValue
     public function __construct(string $value, int $endianness = Endianness::ENDIANNESS_LITTLE_ENDIAN)
     {
         $byteCount = strlen($value);
-        if ($byteCount !== 1) {
+        if ($byteCount !== self::BYTE_COUNT) {
             throw new \Exception("Invalid byte count of {$byteCount} for value of type Byte.");
         }
 
-        parent::__construct($value, $endianness);
+        parent::__construct($value, $endianness, self::IS_SIGNED);
     }
 
     /**

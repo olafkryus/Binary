@@ -6,17 +6,17 @@ namespace Kryus\Binary\DataType\Int;
 trait UnsignedValueTrait
 {
     /**
-     * @return static
+     * @return UnsignedValueInterface
      */
-    public function asUnsigned()
+    public function asUnsigned(): UnsignedValueInterface
     {
         return clone $this;
     }
 
     /**
-     * @return static
+     * @return UnsignedValueInterface
      */
-    public function toUnsigned()
+    public function toUnsigned(): UnsignedValueInterface
     {
         return clone $this;
     }

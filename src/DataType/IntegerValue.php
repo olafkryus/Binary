@@ -3,10 +3,13 @@ declare(strict_types=1);
 
 namespace Kryus\Binary\DataType;
 
+use Kryus\Binary\DataType\Int\SignedValueInterface;
+use Kryus\Binary\DataType\Int\UnsignedValueInterface;
 use Kryus\Binary\Enum\Endianness;
 
 class IntegerValue extends NumericValue implements IntegerValueInterface
 {
+    /** @var bool */
     private $signed;
 
     /**
@@ -67,5 +70,49 @@ class IntegerValue extends NumericValue implements IntegerValueInterface
         }
 
         return $value;
+    }
+
+    /**
+     * @return SignedValueInterface
+     */
+    public function asSigned(): SignedValueInterface
+    {
+        return new self($this->__toString(), $this->getEndianness(), true);
+    }
+
+    /**
+     * @return SignedValueInterface
+     * @throws \Exception
+     */
+    public function toSigned(): SignedValueInterface
+    {
+        $value = $this->asSigned();
+
+        if ($value->toInt() < 0) {
+            throw new \Exception("Value too big for type.");
+        }
+
+        return $value;
+    }
+
+    /**
+     * @return UnsignedValueInterface
+     */
+    public function asUnsigned(): UnsignedValueInterface
+    {
+        return new self($this->__toString(), $this->getEndianness(), false);
+    }
+
+    /**
+     * @return UnsignedValueInterface
+     * @throws \Exception
+     */
+    public function toUnsigned(): UnsignedValueInterface
+    {
+        if ($this->toInt() < 0) {
+            throw new \Exception("Value too small for type.");
+        }
+
+        return $this->asUnsigned();
     }
 }

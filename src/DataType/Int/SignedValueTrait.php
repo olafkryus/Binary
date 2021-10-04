@@ -6,17 +6,17 @@ namespace Kryus\Binary\DataType\Int;
 trait SignedValueTrait
 {
     /**
-     * @return static
+     * @return SignedValueInterface
      */
-    public function asSigned()
+    public function asSigned(): SignedValueInterface
     {
         return clone $this;
     }
 
     /**
-     * @return static
+     * @return SignedValueInterface
      */
-    public function toSigned()
+    public function toSigned(): SignedValueInterface
     {
         return clone $this;
     }

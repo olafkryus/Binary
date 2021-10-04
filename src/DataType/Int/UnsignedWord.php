@@ -6,7 +6,7 @@ namespace Kryus\Binary\DataType\Int;
 use Kryus\Binary\DataType\IntegerValue;
 use Kryus\Binary\Enum\Endianness;
 
-class UnsignedWord extends IntegerValue
+class UnsignedWord extends IntegerValue implements WordInterface, UnsignedValueInterface
 {
     use UnsignedValueTrait;
 
@@ -18,11 +18,11 @@ class UnsignedWord extends IntegerValue
     public function __construct(string $value, int $endianness = Endianness::ENDIANNESS_LITTLE_ENDIAN)
     {
         $byteCount = strlen($value);
-        if ($byteCount !== 2) {
+        if ($byteCount !== self::BYTE_COUNT) {
             throw new \Exception("Invalid byte count of {$byteCount} for value of type Unsigned Word.");
         }
 
-        parent::__construct($value, $endianness, false);
+        parent::__construct($value, $endianness, self::IS_SIGNED);
     }
 
     /**

@@ -3,8 +3,6 @@ declare(strict_types=1);
 
 namespace Kryus\Binary\DataType;
 
-use Kryus\Binary\Enum\Endianness;
-
 interface NumericValueInterface extends BinaryValueInterface
 {
     /**
