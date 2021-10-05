@@ -1,11 +1,13 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Kryus\Binary\Value;
 
+use Kryus\Binary\Enum\Endianness;
+use Kryus\Binary\Type;
 use Kryus\Binary\Value\Int\SignedValueInterface;
 use Kryus\Binary\Value\Int\UnsignedValueInterface;
-use Kryus\Binary\Enum\Endianness;
 
 class IntegerValue extends NumericValue implements IntegerValueInterface
 {
@@ -18,27 +20,37 @@ class IntegerValue extends NumericValue implements IntegerValueInterface
      * @param bool $signed
      * @throws \Exception
      */
-    public function __construct(string $value, int $endianness = Endianness::ENDIANNESS_LITTLE_ENDIAN, bool $signed = true)
-    {
+    public function __construct(
+        string $value,
+        int $endianness = Endianness::ENDIANNESS_LITTLE_ENDIAN,
+        bool $signed = true
+    ) {
         parent::__construct($value, $endianness);
 
         $this->signed = $signed;
     }
 
     /**
-     * @return bool
+     * @return SignedValueInterface
+     * @throws \Exception
      */
-    public function isSigned(): bool
+    public function toSigned(): SignedValueInterface
     {
-        return $this->signed;
+        $value = $this->asSigned();
+
+        if ($value->toInt() < 0) {
+            throw new \Exception("Value too big for type.");
+        }
+
+        return $value;
     }
 
     /**
-     * @return bool
+     * @return SignedValueInterface
      */
-    public function isNegative(): bool
+    public function asSigned(): SignedValueInterface
     {
-        return $this->toInt() < 0;
+        return new self($this->__toString(), $this->getEndianness(), true);
     }
 
     /**
@@ -48,14 +60,14 @@ class IntegerValue extends NumericValue implements IntegerValueInterface
     {
         $value = 0;
 
-        $byteCount = $this->getByteCount();
+        $byteCount = $this->getType()->getByteCount();
         $bytes = array_map(
             'ord',
             str_split($this->__toString())
         );
 
         $endianness = $this->getEndianness();
-        $isSigned = $this->isSigned();
+        $isSigned = $this->getType()->signed();
 
         if ($endianness === Endianness::ENDIANNESS_BIG_ENDIAN) {
             for ($i = 0; $i < $byteCount; ++$i) {
@@ -80,35 +92,12 @@ class IntegerValue extends NumericValue implements IntegerValueInterface
         return $value;
     }
 
-    /**
-     * @return SignedValueInterface
-     */
-    public function asSigned(): SignedValueInterface
+    public function getType(): Type\IntegerTypeInterface
     {
-        return new self($this->__toString(), $this->getEndianness(), true);
-    }
+        $parentType = parent::getType();
+        $byteCount = $parentType->getByteCount();
 
-    /**
-     * @return SignedValueInterface
-     * @throws \Exception
-     */
-    public function toSigned(): SignedValueInterface
-    {
-        $value = $this->asSigned();
-
-        if ($value->toInt() < 0) {
-            throw new \Exception("Value too big for type.");
-        }
-
-        return $value;
-    }
-
-    /**
-     * @return UnsignedValueInterface
-     */
-    public function asUnsigned(): UnsignedValueInterface
-    {
-        return new self($this->__toString(), $this->getEndianness(), false);
+        return new Type\IntegerType($byteCount, $this->signed);
     }
 
     /**
@@ -122,5 +111,21 @@ class IntegerValue extends NumericValue implements IntegerValueInterface
         }
 
         return $this->asUnsigned();
+    }
+
+    /**
+     * @return bool
+     */
+    public function isNegative(): bool
+    {
+        return $this->toInt() < 0;
+    }
+
+    /**
+     * @return UnsignedValueInterface
+     */
+    public function asUnsigned(): UnsignedValueInterface
+    {
+        return new self($this->__toString(), $this->getEndianness(), false);
     }
 }

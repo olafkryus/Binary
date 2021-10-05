@@ -1,15 +1,15 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Kryus\Binary\Value\Int;
 
-use Kryus\Binary\Value\IntegerValue;
 use Kryus\Binary\Enum\Endianness;
+use Kryus\Binary\Type;
+use Kryus\Binary\Value\IntegerValue;
 
 class UnsignedDword extends IntegerValue implements DwordInterface, UnsignedValueInterface
 {
-    use UnsignedValueTrait;
-
     /**
      * @param string $value
      * @param int $endianness
@@ -25,13 +25,9 @@ class UnsignedDword extends IntegerValue implements DwordInterface, UnsignedValu
         parent::__construct($value, $endianness, self::IS_SIGNED);
     }
 
-    /**
-     * @return Dword
-     * @throws \Exception
-     */
-    public function asSigned(): Dword
+    public function getType(): Type\IntegerTypeInterface
     {
-        return new Dword($this->__toString(), $this->getEndianness());
+        return new Type\Int\UnsignedDword();
     }
 
     /**
@@ -50,6 +46,31 @@ class UnsignedDword extends IntegerValue implements DwordInterface, UnsignedValu
     }
 
     /**
+     * @return Dword
+     * @throws \Exception
+     */
+    public function asSigned(): Dword
+    {
+        return new Dword($this->__toString(), $this->getEndianness());
+    }
+
+    /**
+     * @return UnsignedDword
+     */
+    public function asUnsigned(): UnsignedDword
+    {
+        return clone $this;
+    }
+
+    /**
+     * @return UnsignedDword
+     */
+    public function toUnsigned(): UnsignedDword
+    {
+        return clone $this;
+    }
+
+    /**
      * @return UnsignedWord
      * @throws \Exception
      */
@@ -58,7 +79,10 @@ class UnsignedDword extends IntegerValue implements DwordInterface, UnsignedValu
         $value = $this->__toString();
         $endianness = $this->getEndianness();
 
-        return new UnsignedWord(substr($value, $endianness === Endianness::ENDIANNESS_LITTLE_ENDIAN ? 2 : 0, 2), $endianness);
+        return new UnsignedWord(
+            substr($value, $endianness === Endianness::ENDIANNESS_LITTLE_ENDIAN ? 2 : 0, 2),
+            $endianness
+        );
     }
 
     /**
@@ -70,6 +94,9 @@ class UnsignedDword extends IntegerValue implements DwordInterface, UnsignedValu
         $value = $this->__toString();
         $endianness = $this->getEndianness();
 
-        return new UnsignedWord(substr($value, $endianness === Endianness::ENDIANNESS_LITTLE_ENDIAN ? 0 : 2, 2), $endianness);
+        return new UnsignedWord(
+            substr($value, $endianness === Endianness::ENDIANNESS_LITTLE_ENDIAN ? 0 : 2, 2),
+            $endianness
+        );
     }
 }

@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Kryus\Binary\Value;
@@ -33,11 +34,6 @@ abstract class NumericValue extends BinaryValue implements NumericValueInterface
     {
         return $this->endianness;
     }
-
-    /**
-     * @return bool
-     */
-    abstract public function isSigned(): bool;
 
     /**
      * @return bool

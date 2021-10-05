@@ -1,15 +1,15 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Kryus\Binary\Value\Int;
 
-use Kryus\Binary\Value\IntegerValue;
 use Kryus\Binary\Enum\Endianness;
+use Kryus\Binary\Type;
+use Kryus\Binary\Value\IntegerValue;
 
 class UnsignedWord extends IntegerValue implements WordInterface, UnsignedValueInterface
 {
-    use UnsignedValueTrait;
-
     /**
      * @param string $value
      * @param int $endianness
@@ -25,13 +25,9 @@ class UnsignedWord extends IntegerValue implements WordInterface, UnsignedValueI
         parent::__construct($value, $endianness, self::IS_SIGNED);
     }
 
-    /**
-     * @return Word
-     * @throws \Exception
-     */
-    public function asSigned(): Word
+    public function getType(): Type\IntegerTypeInterface
     {
-        return new Word($this->__toString(), $this->getEndianness());
+        return new Type\Int\UnsignedWord();
     }
 
     /**
@@ -47,6 +43,31 @@ class UnsignedWord extends IntegerValue implements WordInterface, UnsignedValueI
         }
 
         return $value;
+    }
+
+    /**
+     * @return Word
+     * @throws \Exception
+     */
+    public function asSigned(): Word
+    {
+        return new Word($this->__toString(), $this->getEndianness());
+    }
+
+    /**
+     * @return UnsignedWord
+     */
+    public function asUnsigned(): UnsignedWord
+    {
+        return clone $this;
+    }
+
+    /**
+     * @return UnsignedWord
+     */
+    public function toUnsigned(): UnsignedWord
+    {
+        return clone $this;
     }
 
     /**

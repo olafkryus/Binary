@@ -1,16 +1,19 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Kryus\Binary\Value;
 
+use Kryus\Binary\Type;
+
 class FloatingPointValue extends NumericValue implements FloatingPointValueInterface
 {
-    /**
-     * @return bool
-     */
-    public function isSigned(): bool
+    public function getType(): Type\FloatingPointTypeInterface
     {
-        return true;
+        $parentType = parent::getType();
+        $byteCount = $parentType->getByteCount();
+
+        return new Type\FloatingPointType($byteCount);
     }
 
     /**

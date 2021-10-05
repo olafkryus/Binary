@@ -16,7 +16,7 @@ class IntegerValueTest extends TestCase
     {
         $value = new IntegerValue(' ', Endianness::ENDIANNESS_LITTLE_ENDIAN, $signedness);
 
-        self::assertSame($signedness, $value->isSigned());
+        self::assertSame($signedness, $value->getType()->signed());
     }
 
     /**

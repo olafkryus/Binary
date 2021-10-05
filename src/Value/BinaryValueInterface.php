@@ -1,14 +1,17 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Kryus\Binary\Value;
 
+use Kryus\Binary\Type\BinaryTypeInterface;
+
 interface BinaryValueInterface
 {
     /**
-     * @return int
+     * @return BinaryTypeInterface
      */
-    public function getByteCount(): int;
+    public function getType(): BinaryTypeInterface;
 
     /**
      * @return string

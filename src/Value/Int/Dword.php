@@ -1,15 +1,15 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Kryus\Binary\Value\Int;
 
-use Kryus\Binary\Value\IntegerValue;
 use Kryus\Binary\Enum\Endianness;
+use Kryus\Binary\Type;
+use Kryus\Binary\Value\IntegerValue;
 
 class Dword extends IntegerValue implements DwordInterface, SignedValueInterface
 {
-    use SignedValueTrait;
-
     /**
      * @param string $value
      * @param int $endianness
@@ -25,13 +25,25 @@ class Dword extends IntegerValue implements DwordInterface, SignedValueInterface
         parent::__construct($value, $endianness, self::IS_SIGNED);
     }
 
-    /**
-     * @return UnsignedDword
-     * @throws \Exception
-     */
-    public function asUnsigned(): UnsignedDword
+    public function getType(): Type\IntegerTypeInterface
     {
-        return new UnsignedDword($this->__toString(), $this->getEndianness());
+        return new Type\Int\Dword();
+    }
+
+    /**
+     * @return Dword
+     */
+    public function asSigned(): Dword
+    {
+        return clone $this;
+    }
+
+    /**
+     * @return Dword
+     */
+    public function toSigned(): Dword
+    {
+        return clone $this;
     }
 
     /**
@@ -45,5 +57,14 @@ class Dword extends IntegerValue implements DwordInterface, SignedValueInterface
         }
 
         return $this->asUnsigned();
+    }
+
+    /**
+     * @return UnsignedDword
+     * @throws \Exception
+     */
+    public function asUnsigned(): UnsignedDword
+    {
+        return new UnsignedDword($this->__toString(), $this->getEndianness());
     }
 }

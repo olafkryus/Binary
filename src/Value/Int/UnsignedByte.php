@@ -1,15 +1,15 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Kryus\Binary\Value\Int;
 
-use Kryus\Binary\Value\IntegerValue;
 use Kryus\Binary\Enum\Endianness;
+use Kryus\Binary\Type;
+use Kryus\Binary\Value\IntegerValue;
 
 class UnsignedByte extends IntegerValue implements ByteInterface, UnsignedValueInterface
 {
-    use UnsignedValueTrait;
-
     /**
      * @param string $value
      * @param int $endianness
@@ -25,13 +25,9 @@ class UnsignedByte extends IntegerValue implements ByteInterface, UnsignedValueI
         parent::__construct($value, $endianness, self::IS_SIGNED);
     }
 
-    /**
-     * @return Byte
-     * @throws \Exception
-     */
-    public function asSigned(): Byte
+    public function getType(): Type\IntegerTypeInterface
     {
-        return new Byte($this->__toString(), $this->getEndianness());
+        return new Type\Int\UnsignedByte();
     }
 
     /**
@@ -47,6 +43,31 @@ class UnsignedByte extends IntegerValue implements ByteInterface, UnsignedValueI
         }
 
         return $value;
+    }
+
+    /**
+     * @return Byte
+     * @throws \Exception
+     */
+    public function asSigned(): Byte
+    {
+        return new Byte($this->__toString(), $this->getEndianness());
+    }
+
+    /**
+     * @return UnsignedByte
+     */
+    public function asUnsigned(): UnsignedByte
+    {
+        return clone $this;
+    }
+
+    /**
+     * @return UnsignedByte
+     */
+    public function toUnsigned(): UnsignedByte
+    {
+        return clone $this;
     }
 
     /**

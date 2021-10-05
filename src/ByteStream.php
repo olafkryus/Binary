@@ -3,12 +3,8 @@ declare(strict_types=1);
 
 namespace Kryus\Binary;
 
-use Kryus\Binary\Value\Int\Byte;
-use Kryus\Binary\Value\Int\Dword;
-use Kryus\Binary\Value\Int\UnsignedByte;
-use Kryus\Binary\Value\Int\UnsignedDword;
-use Kryus\Binary\Value\Int\UnsignedWord;
-use Kryus\Binary\Value\Int\Word;
+use Kryus\Binary\Type;
+use Kryus\Binary\Value;
 use Kryus\Binary\Enum\Endianness;
 
 class ByteStream
@@ -127,10 +123,10 @@ class ByteStream
 
     /**
      * @param int|null $endianness
-     * @return Byte
+     * @return Value\Int\Byte
      * @throws \Exception
      */
-    public function readByte(?int $endianness = null): Byte
+    public function readByte(?int $endianness = null): Value\Int\Byte
     {
         $endianness = $endianness ?? $this->endianness;
         if (!Endianness::isValid($endianness)) {
@@ -139,15 +135,15 @@ class ByteStream
 
         $binaryValue = $this->readBytes(1);
 
-        return new Byte($binaryValue, $endianness);
+        return new Value\Int\Byte($binaryValue, $endianness);
     }
 
     /**
      * @param int|null $endianness
-     * @return UnsignedByte
+     * @return Value\Int\UnsignedByte
      * @throws \Exception
      */
-    public function readUnsignedByte(?int $endianness = null): UnsignedByte
+    public function readUnsignedByte(?int $endianness = null): Value\Int\UnsignedByte
     {
         $endianness = $endianness ?? $this->endianness;
         if (!Endianness::isValid($endianness)) {
@@ -156,15 +152,15 @@ class ByteStream
 
         $binaryValue = $this->readBytes(1);
 
-        return new UnsignedByte($binaryValue, $endianness);
+        return new Value\Int\UnsignedByte($binaryValue, $endianness);
     }
 
     /**
      * @param int|null $endianness
-     * @return Word
+     * @return Value\Int\Word
      * @throws \Exception
      */
-    public function readWord(?int $endianness = null): Word
+    public function readWord(?int $endianness = null): Value\Int\Word
     {
         $endianness = $endianness ?? $this->endianness;
         if (!Endianness::isValid($endianness)) {
@@ -173,15 +169,15 @@ class ByteStream
 
         $binaryValue = $this->readBytes(2);
 
-        return new Word($binaryValue, $endianness);
+        return new Value\Int\Word($binaryValue, $endianness);
     }
 
     /**
      * @param int|null $endianness
-     * @return UnsignedWord
+     * @return Value\Int\UnsignedWord
      * @throws \Exception
      */
-    public function readUnsignedWord(?int $endianness = null): UnsignedWord
+    public function readUnsignedWord(?int $endianness = null): Value\Int\UnsignedWord
     {
         $endianness = $endianness ?? $this->endianness;
         if (!Endianness::isValid($endianness)) {
@@ -190,15 +186,15 @@ class ByteStream
 
         $binaryValue = $this->readBytes(2);
 
-        return new UnsignedWord($binaryValue, $endianness);
+        return new Value\Int\UnsignedWord($binaryValue, $endianness);
     }
 
     /**
      * @param int|null $endianness
-     * @return Dword
+     * @return Value\Int\Dword
      * @throws \Exception
      */
-    public function readDword(?int $endianness = null): Dword
+    public function readDword(?int $endianness = null): Value\Int\Dword
     {
         $endianness = $endianness ?? $this->endianness;
         if (!Endianness::isValid($endianness)) {
@@ -207,15 +203,15 @@ class ByteStream
 
         $binaryValue = $this->readBytes(4);
 
-        return new Dword($binaryValue, $endianness);
+        return new Value\Int\Dword($binaryValue, $endianness);
     }
 
     /**
      * @param int|null $endianness
-     * @return UnsignedDword
+     * @return Value\Int\UnsignedDword
      * @throws \Exception
      */
-    public function readUnsignedDword(?int $endianness = null): UnsignedDword
+    public function readUnsignedDword(?int $endianness = null): Value\Int\UnsignedDword
     {
         $endianness = $endianness ?? $this->endianness;
         if (!Endianness::isValid($endianness)) {
@@ -224,6 +220,6 @@ class ByteStream
 
         $binaryValue = $this->readBytes(4);
 
-        return new UnsignedDword($binaryValue, $endianness);
+        return new Value\Int\UnsignedDword($binaryValue, $endianness);
     }
 }

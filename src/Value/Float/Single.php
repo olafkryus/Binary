@@ -1,8 +1,10 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Kryus\Binary\Value\Float;
 
+use Kryus\Binary\Type;
 use Kryus\Binary\Value\FloatingPointValue;
 
 /**
@@ -10,5 +12,8 @@ use Kryus\Binary\Value\FloatingPointValue;
  */
 class Single extends FloatingPointValue
 {
-
+    public function getType(): Type\FloatingPointTypeInterface
+    {
+        return new Type\Float\Single();
+    }
 }
