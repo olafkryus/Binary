@@ -1,11 +1,12 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Kryus\Binary;
 
+use Kryus\Binary\Enum\Endianness;
 use Kryus\Binary\Type;
 use Kryus\Binary\Value;
-use Kryus\Binary\Enum\Endianness;
 
 class ByteStream
 {
@@ -50,8 +51,11 @@ class ByteStream
      * @return ByteStream
      * @throws \Exception
      */
-    public static function createFromFilename(string $filename, string $mode, int $endianness = Endianness::ENDIANNESS_LITTLE_ENDIAN): ByteStream
-    {
+    public static function createFromFilename(
+        string $filename,
+        string $mode,
+        int $endianness = Endianness::ENDIANNESS_LITTLE_ENDIAN
+    ): ByteStream {
         $handle = fopen($filename, $mode);
 
         $stream = new self($handle, $endianness);
@@ -221,5 +225,69 @@ class ByteStream
         $binaryValue = $this->readBytes(4);
 
         return new Value\Int\UnsignedDword($binaryValue, $endianness);
+    }
+
+    /**
+     * @param string $className
+     * @return object
+     * @throws \Exception
+     */
+    public function readObject(string $className): object
+    {
+        return match ($className) {
+            Type\Int\Byte::class => $this->readByte(),
+            Type\Int\UnsignedByte::class => $this->readUnsignedByte(),
+            Type\Int\Word::class => $this->readWord(),
+            Type\Int\UnsignedWord::class => $this->readUnsignedWord(),
+            Type\Int\Dword::class => $this->readDword(),
+            Type\Int\UnsignedDword::class => $this->readUnsignedDword(),
+            default => (function (string $className): object {
+                try {
+                    $classReflection = new \ReflectionClass($className);
+                } catch (\ReflectionException $e) {
+                    throw new \Exception('Invalid class.');
+                }
+
+                $methodReflection = $classReflection->getConstructor();
+                if ($methodReflection !== null) {
+                    $parameters = [];
+                    foreach ($methodReflection->getParameters() as $parameterReflection) {
+                        $attributes = $parameterReflection->getAttributes(Type\BinaryTypeInterface::class, 2);
+                        if (\count($attributes) !== 1) {
+                            throw new \Exception('Invalid parameter.');
+                        }
+
+                        $value = $this->readObject($attributes[0]->getName());
+
+                        $parameters[] = match ($parameterReflection->getType()->getName()) {
+                            'int' => $value->toInt(),
+                            'float' => $value->toFloat(),
+                            default => $value
+                        };
+                    }
+
+                    return new $className(...$parameters);
+                }
+
+                $object = new $className();
+                foreach ($classReflection->getProperties(\ReflectionProperty::IS_PUBLIC) as $propertyReflection) {
+                    $attributes = $propertyReflection->getAttributes(Type\BinaryTypeInterface::class, 2);
+                    if (\count($attributes) !== 1) {
+                        throw new \Exception('Invalid parameter.');
+                    }
+
+                    $value = $this->readObject($attributes[0]->getName());
+                    $object->{$propertyReflection->getName()} = match ($propertyReflection->getType()->getName()) {
+                        'int' => $value->toInt(),
+                        'float' => $value->toFloat(),
+                        default => $value
+                    };
+                }
+
+                return $object;
+            })(
+                $className
+            )
+        };
     }
 }
