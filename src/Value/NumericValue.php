@@ -52,6 +52,88 @@ abstract class NumericValue extends BinaryValue implements NumericValueInterface
     }
 
     /**
+     * @return static
+     */
+    public function toLittleEndian(): static
+    {
+        if ($this->getEndianness() === Endianness::ENDIANNESS_LITTLE_ENDIAN) {
+            return clone $this;
+        }
+
+        $bytes = array_map(
+            'ord',
+            str_split($this->__toString())
+        );
+        $reversedBytes = array_reverse($bytes);
+        $littleEndianValue = implode(
+            '',
+            array_map(
+                'chr',
+                $reversedBytes
+            )
+        );
+
+        return new static(
+            $this->getType(),
+            $littleEndianValue,
+            Endianness::ENDIANNESS_LITTLE_ENDIAN
+        );
+    }
+
+    /**
+     * @return static
+     */
+    public function asLittleEndian(): static
+    {
+        return new static(
+            $this->getType(),
+            $this->__toString(),
+            Endianness::ENDIANNESS_LITTLE_ENDIAN
+        );
+    }
+
+    /**
+     * @return static
+     */
+    public function toBigEndian(): static
+    {
+        if ($this->getEndianness() === Endianness::ENDIANNESS_BIG_ENDIAN) {
+            return clone $this;
+        }
+
+        $bytes = array_map(
+            'ord',
+            str_split($this->__toString())
+        );
+        $reversedBytes = array_reverse($bytes);
+        $bigEndianValue = implode(
+            '',
+            array_map(
+                'chr',
+                $reversedBytes
+            )
+        );
+
+        return new static(
+            $this->getType(),
+            $bigEndianValue,
+            Endianness::ENDIANNESS_BIG_ENDIAN
+        );
+    }
+
+    /**
+     * @return static
+     */
+    public function asBigEndian(): static
+    {
+        return new static(
+            $this->getType(),
+            $this->__toString(),
+            Endianness::ENDIANNESS_BIG_ENDIAN
+        );
+    }
+
+    /**
      * @return bool
      */
     abstract public function isNegative(): bool;

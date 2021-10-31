@@ -19,6 +19,26 @@ interface NumericValueInterface extends BinaryValueInterface
     public function getEndianness(): int;
 
     /**
+     * @return static
+     */
+    public function toLittleEndian(): static;
+
+    /**
+     * @return static
+     */
+    public function asLittleEndian(): static;
+
+    /**
+     * @return static
+     */
+    public function toBigEndian(): static;
+
+    /**
+     * @return static
+     */
+    public function asBigEndian(): static;
+
+    /**
      * @return bool
      */
     public function isNegative(): bool;
