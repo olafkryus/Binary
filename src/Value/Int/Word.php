@@ -22,10 +22,10 @@ class Word extends IntegerValue implements WordInterface, SignedValueInterface
             throw new \Exception("Invalid byte count of {$byteCount} for value of type Word.");
         }
 
-        parent::__construct($value, $endianness, self::IS_SIGNED);
+        parent::__construct($this->getType(), $value, $endianness);
     }
 
-    public function getType(): Type\IntegerTypeInterface
+    public function getType(): Type\Int\Word
     {
         return new Type\Int\Word();
     }

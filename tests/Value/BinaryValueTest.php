@@ -3,9 +3,8 @@ declare(strict_types=1);
 
 namespace Kryus\Binary\Tests\Value;
 
+use Kryus\Binary\Type\BinaryTypeInterface;
 use Kryus\Binary\Value\BinaryValue;
-use Kryus\Binary\Value\IntegerValue;
-use Kryus\Binary\Enum\Endianness;
 use PHPUnit\Framework\TestCase;
 
 class BinaryValueTest extends TestCase
@@ -41,18 +40,9 @@ class BinaryValueTest extends TestCase
         $x00008081 = chr(0x00) . chr(0x00) . chr(0x80) . chr(0x81);
 
         return [
-            '1-byte little endian signed' => new IntegerValue($x80, Endianness::ENDIANNESS_LITTLE_ENDIAN, true),
-            '1-byte big endian signed' => new IntegerValue($x80, Endianness::ENDIANNESS_BIG_ENDIAN, true),
-            '1-byte little endian unsigned' => new IntegerValue($x80, Endianness::ENDIANNESS_LITTLE_ENDIAN, false),
-            '1-byte big endian unsigned' => new IntegerValue($x80, Endianness::ENDIANNESS_BIG_ENDIAN, false),
-            '2-byte little endian signed' => new IntegerValue($x8081, Endianness::ENDIANNESS_LITTLE_ENDIAN, true),
-            '2-byte big endian signed' => new IntegerValue($x8081, Endianness::ENDIANNESS_BIG_ENDIAN, true),
-            '2-byte little endian unsigned' => new IntegerValue($x8081, Endianness::ENDIANNESS_LITTLE_ENDIAN, false),
-            '2-byte big endian unsigned' => new IntegerValue($x8081, Endianness::ENDIANNESS_BIG_ENDIAN, false),
-            '4-byte little endian signed' => new IntegerValue($x00008081, Endianness::ENDIANNESS_LITTLE_ENDIAN, true),
-            '4-byte big endian signed' => new IntegerValue($x00008081, Endianness::ENDIANNESS_BIG_ENDIAN, true),
-            '4-byte little endian unsigned' => new IntegerValue($x00008081, Endianness::ENDIANNESS_LITTLE_ENDIAN, false),
-            '4-byte big endian unsigned' => new IntegerValue($x00008081, Endianness::ENDIANNESS_BIG_ENDIAN, false),
+            '1-byte' => new BinaryValue($this->createType(1), $x80),
+            '2-byte' => new BinaryValue($this->createType(2), $x8081),
+            '4-byte' => new BinaryValue($this->createType(4), $x00008081),
         ];
     }
 
@@ -65,18 +55,9 @@ class BinaryValueTest extends TestCase
         $_00008081 = '00008081';
 
         $expectedValues = [
-            '1-byte little endian signed' => $_80,
-            '1-byte big endian signed' => $_80,
-            '1-byte little endian unsigned' => $_80,
-            '1-byte big endian unsigned' => $_80,
-            '2-byte little endian signed' => $_8081,
-            '2-byte big endian signed' => $_8081,
-            '2-byte little endian unsigned' => $_8081,
-            '2-byte big endian unsigned' => $_8081,
-            '4-byte little endian signed' => $_00008081,
-            '4-byte big endian signed' => $_00008081,
-            '4-byte little endian unsigned' => $_00008081,
-            '4-byte big endian unsigned' => $_00008081,
+            '1-byte' => $_80,
+            '2-byte' => $_8081,
+            '4-byte' => $_00008081,
         ];
 
         return array_map(
@@ -97,18 +78,9 @@ class BinaryValueTest extends TestCase
         $_00008081 = '00000000' . '00000000' . '10000000' . '10000001';
 
         $expectedValues = [
-            '1-byte little endian signed' => $_80,
-            '1-byte big endian signed' => $_80,
-            '1-byte little endian unsigned' => $_80,
-            '1-byte big endian unsigned' => $_80,
-            '2-byte little endian signed' => $_8081,
-            '2-byte big endian signed' => $_8081,
-            '2-byte little endian unsigned' => $_8081,
-            '2-byte big endian unsigned' => $_8081,
-            '4-byte little endian signed' => $_00008081,
-            '4-byte big endian signed' => $_00008081,
-            '4-byte little endian unsigned' => $_00008081,
-            '4-byte big endian unsigned' => $_00008081,
+            '1-byte' => $_80,
+            '2-byte' => $_8081,
+            '4-byte' => $_00008081,
         ];
 
         return array_map(
@@ -129,18 +101,9 @@ class BinaryValueTest extends TestCase
         $x00008081 = chr(0x00) . chr(0x00) . chr(0x80) . chr(0x81);
 
         $expectedValues = [
-            '1-byte little endian signed' => $x80,
-            '1-byte big endian signed' => $x80,
-            '1-byte little endian unsigned' => $x80,
-            '1-byte big endian unsigned' => $x80,
-            '2-byte little endian signed' => $x8081,
-            '2-byte big endian signed' => $x8081,
-            '2-byte little endian unsigned' => $x8081,
-            '2-byte big endian unsigned' => $x8081,
-            '4-byte little endian signed' => $x00008081,
-            '4-byte big endian signed' => $x00008081,
-            '4-byte little endian unsigned' => $x00008081,
-            '4-byte big endian unsigned' => $x00008081,
+            '1-byte' => $x80,
+            '2-byte' => $x8081,
+            '4-byte' => $x00008081,
         ];
 
         return array_map(
@@ -150,5 +113,20 @@ class BinaryValueTest extends TestCase
             $values,
             array_keys($values)
         );
+    }
+
+    private function createType(int $byteCount): BinaryTypeInterface
+    {
+        return new class($byteCount) implements BinaryTypeInterface {
+            public function __construct(
+                private int $byteCount
+            ) {
+            }
+
+            public function getByteCount(): int
+            {
+                return $this->byteCount;
+            }
+        };
     }
 }

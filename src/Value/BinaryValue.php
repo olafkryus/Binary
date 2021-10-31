@@ -4,29 +4,34 @@ declare(strict_types=1);
 
 namespace Kryus\Binary\Value;
 
-use Kryus\Binary\Type;
+use Kryus\Binary\Type\BinaryTypeInterface;
 
 class BinaryValue implements BinaryValueInterface
 {
+    /** @var BinaryTypeInterface  */
+    private BinaryTypeInterface $type;
+
     /** @var int[] */
-    private $value;
+    private array $value;
 
     /**
+     * @param BinaryTypeInterface $type
      * @param string $value
      */
-    public function __construct(string $value)
-    {
+    public function __construct(
+        BinaryTypeInterface $type,
+        string $value
+    ) {
+        $this->type = $type;
         $this->value = array_map(
             'ord',
             str_split($value)
         );
     }
 
-    public function getType(): Type\BinaryTypeInterface
+    public function getType(): BinaryTypeInterface
     {
-        $byteCount = count($this->value);
-
-        return new Type\BinaryType($byteCount);
+        return $this->type;
     }
 
     /**
@@ -64,7 +69,7 @@ class BinaryValue implements BinaryValueInterface
     /**
      * @return string
      */
-    public function __toString()
+    public function __toString(): string
     {
         return implode(
             '',

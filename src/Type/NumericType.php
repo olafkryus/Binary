@@ -17,7 +17,7 @@ abstract class NumericType extends BinaryType implements NumericTypeInterface
         parent::__construct($byteCount);
     }
 
-    public function signed(): bool
+    public function isSigned(): bool
     {
         return $this->signed;
     }

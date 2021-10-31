@@ -22,10 +22,10 @@ class Dword extends IntegerValue implements DwordInterface, SignedValueInterface
             throw new \Exception("Invalid byte count of {$byteCount} for value of type Dword.");
         }
 
-        parent::__construct($value, $endianness, self::IS_SIGNED);
+        parent::__construct($this->getType(), $value, $endianness);
     }
 
-    public function getType(): Type\IntegerTypeInterface
+    public function getType(): Type\Int\Dword
     {
         return new Type\Int\Dword();
     }

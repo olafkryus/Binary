@@ -22,10 +22,10 @@ class UnsignedDword extends IntegerValue implements DwordInterface, UnsignedValu
             throw new \Exception("Invalid byte count of {$byteCount} for value of type Unsigned Dword.");
         }
 
-        parent::__construct($value, $endianness, self::IS_SIGNED);
+        parent::__construct($this->getType(), $value, $endianness);
     }
 
-    public function getType(): Type\IntegerTypeInterface
+    public function getType(): Type\Int\UnsignedDword
     {
         return new Type\Int\UnsignedDword();
     }

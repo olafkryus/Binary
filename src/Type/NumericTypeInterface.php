@@ -9,5 +9,5 @@ interface NumericTypeInterface extends BinaryTypeInterface
     /**
      * @return bool
      */
-    public function signed(): bool;
+    public function isSigned(): bool;
 }

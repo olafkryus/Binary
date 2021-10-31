@@ -22,10 +22,10 @@ class Byte extends IntegerValue implements ByteInterface, SignedValueInterface
             throw new \Exception("Invalid byte count of {$byteCount} for value of type Byte.");
         }
 
-        parent::__construct($value, $endianness, self::IS_SIGNED);
+        parent::__construct($this->getType(), $value, $endianness);
     }
 
-    public function getType(): Type\IntegerTypeInterface
+    public function getType(): Type\Int\Byte
     {
         return new Type\Int\Byte();
     }

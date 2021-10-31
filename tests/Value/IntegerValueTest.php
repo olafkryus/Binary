@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Kryus\Binary\Tests\Value;
 
+use Kryus\Binary\Type\IntegerTypeInterface;
 use Kryus\Binary\Value\IntegerValue;
 use Kryus\Binary\Enum\Endianness;
 use PHPUnit\Framework\TestCase;
@@ -10,30 +11,22 @@ use PHPUnit\Framework\TestCase;
 class IntegerValueTest extends TestCase
 {
     /**
-     * @dataProvider signednessProvider
-     */
-    public function testDoesReturnCorrectSignedness(bool $signedness): void
-    {
-        $value = new IntegerValue(' ', Endianness::ENDIANNESS_LITTLE_ENDIAN, $signedness);
-
-        self::assertSame($signedness, $value->getType()->signed());
-    }
-
-    /**
      * @dataProvider endiannessProvider
      */
     public function testDoesReturnCorrectEndianness(int $endianness): void
     {
-        $value = new IntegerValue(' ', $endianness);
+        $typeStub = $this->createStub(IntegerTypeInterface::class);
+        $value = new IntegerValue($typeStub, ' ', $endianness);
 
         self::assertSame($endianness, $value->getEndianness());
     }
 
     public function testCannotInstantiateWithInvalidEndianness(): void
     {
+        $typeStub = $this->createStub(IntegerTypeInterface::class);
         $this->expectException(\Exception::class);
 
-        new IntegerValue(' ', 2);
+        new IntegerValue($typeStub, ' ', 2);
     }
 
     /**
@@ -42,14 +35,6 @@ class IntegerValueTest extends TestCase
     public function testDoesReturnCorrectIntValue(IntegerValue $value, int $expectedValue): void
     {
         self::assertSame($expectedValue, $value->toInt());
-    }
-
-    public function signednessProvider(): array
-    {
-        return [
-            'signed' => [true],
-            'unsigned' => [false],
-        ];
     }
 
     public function endiannessProvider(): array
@@ -67,18 +52,18 @@ class IntegerValueTest extends TestCase
         $x00008081 = chr(0x00) . chr(0x00) . chr(0x80) . chr(0x81);
 
         return [
-            '1-byte little endian signed' => new IntegerValue($x80, Endianness::ENDIANNESS_LITTLE_ENDIAN, true),
-            '1-byte big endian signed' => new IntegerValue($x80, Endianness::ENDIANNESS_BIG_ENDIAN, true),
-            '1-byte little endian unsigned' => new IntegerValue($x80, Endianness::ENDIANNESS_LITTLE_ENDIAN, false),
-            '1-byte big endian unsigned' => new IntegerValue($x80, Endianness::ENDIANNESS_BIG_ENDIAN, false),
-            '2-byte little endian signed' => new IntegerValue($x8081, Endianness::ENDIANNESS_LITTLE_ENDIAN, true),
-            '2-byte big endian signed' => new IntegerValue($x8081, Endianness::ENDIANNESS_BIG_ENDIAN, true),
-            '2-byte little endian unsigned' => new IntegerValue($x8081, Endianness::ENDIANNESS_LITTLE_ENDIAN, false),
-            '2-byte big endian unsigned' => new IntegerValue($x8081, Endianness::ENDIANNESS_BIG_ENDIAN, false),
-            '4-byte little endian signed' => new IntegerValue($x00008081, Endianness::ENDIANNESS_LITTLE_ENDIAN, true),
-            '4-byte big endian signed' => new IntegerValue($x00008081, Endianness::ENDIANNESS_BIG_ENDIAN, true),
-            '4-byte little endian unsigned' => new IntegerValue($x00008081, Endianness::ENDIANNESS_LITTLE_ENDIAN, false),
-            '4-byte big endian unsigned' => new IntegerValue($x00008081, Endianness::ENDIANNESS_BIG_ENDIAN, false),
+            '1-byte little endian signed' => new IntegerValue($this->createType(1, true), $x80, Endianness::ENDIANNESS_LITTLE_ENDIAN),
+            '1-byte big endian signed' => new IntegerValue($this->createType(1, true), $x80, Endianness::ENDIANNESS_BIG_ENDIAN),
+            '1-byte little endian unsigned' => new IntegerValue($this->createType(1, false), $x80, Endianness::ENDIANNESS_LITTLE_ENDIAN),
+            '1-byte big endian unsigned' => new IntegerValue($this->createType(1, false), $x80, Endianness::ENDIANNESS_BIG_ENDIAN),
+            '2-byte little endian signed' => new IntegerValue($this->createType(2, true), $x8081, Endianness::ENDIANNESS_LITTLE_ENDIAN),
+            '2-byte big endian signed' => new IntegerValue($this->createType(2, true), $x8081, Endianness::ENDIANNESS_BIG_ENDIAN),
+            '2-byte little endian unsigned' => new IntegerValue($this->createType(2, false), $x8081, Endianness::ENDIANNESS_LITTLE_ENDIAN),
+            '2-byte big endian unsigned' => new IntegerValue($this->createType(2, false), $x8081, Endianness::ENDIANNESS_BIG_ENDIAN),
+            '4-byte little endian signed' => new IntegerValue($this->createType(4, true), $x00008081, Endianness::ENDIANNESS_LITTLE_ENDIAN),
+            '4-byte big endian signed' => new IntegerValue($this->createType(4, true), $x00008081, Endianness::ENDIANNESS_BIG_ENDIAN),
+            '4-byte little endian unsigned' => new IntegerValue($this->createType(4, false), $x00008081, Endianness::ENDIANNESS_LITTLE_ENDIAN),
+            '4-byte big endian unsigned' => new IntegerValue($this->createType(4, false), $x00008081, Endianness::ENDIANNESS_BIG_ENDIAN),
         ];
     }
 
@@ -108,5 +93,26 @@ class IntegerValueTest extends TestCase
             $values,
             array_keys($values)
         );
+    }
+
+    private function createType(int $byteCount, bool $isSigned): IntegerTypeInterface
+    {
+        return new class($byteCount, $isSigned) implements IntegerTypeInterface {
+            public function __construct(
+                private int $byteCount,
+                private bool $isSigned
+            ) {
+            }
+
+            public function getByteCount(): int
+            {
+                return $this->byteCount;
+            }
+
+            public function isSigned(): bool
+            {
+                return $this->isSigned;
+            }
+        };
     }
 }

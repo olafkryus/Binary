@@ -8,5 +8,4 @@ use Kryus\Binary\Value\IntegerValueInterface;
 
 interface SignedValueInterface extends IntegerValueInterface
 {
-    public const IS_SIGNED = true;
 }

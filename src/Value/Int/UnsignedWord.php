@@ -22,10 +22,10 @@ class UnsignedWord extends IntegerValue implements WordInterface, UnsignedValueI
             throw new \Exception("Invalid byte count of {$byteCount} for value of type Unsigned Word.");
         }
 
-        parent::__construct($value, $endianness, self::IS_SIGNED);
+        parent::__construct($this->getType(), $value, $endianness);
     }
 
-    public function getType(): Type\IntegerTypeInterface
+    public function getType(): Type\Int\UnsignedWord
     {
         return new Type\Int\UnsignedWord();
     }

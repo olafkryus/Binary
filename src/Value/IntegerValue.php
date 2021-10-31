@@ -5,29 +5,28 @@ declare(strict_types=1);
 namespace Kryus\Binary\Value;
 
 use Kryus\Binary\Enum\Endianness;
-use Kryus\Binary\Type;
+use Kryus\Binary\Type\IntegerTypeInterface;
 use Kryus\Binary\Value\Int\SignedValueInterface;
 use Kryus\Binary\Value\Int\UnsignedValueInterface;
 
 class IntegerValue extends NumericValue implements IntegerValueInterface
 {
-    /** @var bool */
-    private $signed;
+    /** @var IntegerTypeInterface */
+    private IntegerTypeInterface $type;
 
     /**
+     * @param IntegerTypeInterface $type
      * @param string $value
      * @param int $endianness
-     * @param bool $signed
      * @throws \Exception
      */
     public function __construct(
+        IntegerTypeInterface $type,
         string $value,
-        int $endianness = Endianness::ENDIANNESS_LITTLE_ENDIAN,
-        bool $signed = true
+        int $endianness = Endianness::ENDIANNESS_LITTLE_ENDIAN
     ) {
-        parent::__construct($value, $endianness);
-
-        $this->signed = $signed;
+        parent::__construct($type, $value, $endianness);
+        $this->type = $type;
     }
 
     /**
@@ -50,7 +49,11 @@ class IntegerValue extends NumericValue implements IntegerValueInterface
      */
     public function asSigned(): SignedValueInterface
     {
-        return new self($this->__toString(), $this->getEndianness(), true);
+        return new self(
+            $this->getType(),
+            $this->__toString(),
+            $this->getEndianness()
+        );
     }
 
     /**
@@ -60,14 +63,14 @@ class IntegerValue extends NumericValue implements IntegerValueInterface
     {
         $value = 0;
 
-        $byteCount = $this->getType()->getByteCount();
         $bytes = array_map(
             'ord',
             str_split($this->__toString())
         );
+        $byteCount = count($bytes);
 
         $endianness = $this->getEndianness();
-        $isSigned = $this->getType()->signed();
+        $isSigned = $this->getType()->isSigned();
 
         if ($endianness === Endianness::ENDIANNESS_BIG_ENDIAN) {
             for ($i = 0; $i < $byteCount; ++$i) {
@@ -92,12 +95,12 @@ class IntegerValue extends NumericValue implements IntegerValueInterface
         return $value;
     }
 
-    public function getType(): Type\IntegerTypeInterface
+    /**
+     * @return IntegerTypeInterface
+     */
+    public function getType(): IntegerTypeInterface
     {
-        $parentType = parent::getType();
-        $byteCount = $parentType->getByteCount();
-
-        return new Type\IntegerType($byteCount, $this->signed);
+        return $this->type;
     }
 
     /**
@@ -126,6 +129,10 @@ class IntegerValue extends NumericValue implements IntegerValueInterface
      */
     public function asUnsigned(): UnsignedValueInterface
     {
-        return new self($this->__toString(), $this->getEndianness(), false);
+        return new self(
+            $this->getType(),
+            $this->__toString(),
+            $this->getEndianness()
+        );
     }
 }

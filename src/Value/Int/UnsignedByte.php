@@ -22,10 +22,10 @@ class UnsignedByte extends IntegerValue implements ByteInterface, UnsignedValueI
             throw new \Exception("Invalid byte count of {$byteCount} for value of type Unsigned Byte.");
         }
 
-        parent::__construct($value, $endianness, self::IS_SIGNED);
+        parent::__construct($this->getType(), $value, $endianness);
     }
 
-    public function getType(): Type\IntegerTypeInterface
+    public function getType(): Type\Int\UnsignedByte
     {
         return new Type\Int\UnsignedByte();
     }

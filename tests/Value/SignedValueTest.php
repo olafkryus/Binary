@@ -3,11 +3,10 @@ declare(strict_types=1);
 
 namespace Kryus\Binary\Tests\Value;
 
-use Kryus\Binary\Value\BinaryValue;
 use Kryus\Binary\Value\Int\Byte;
 use Kryus\Binary\Value\Int\Dword;
 use Kryus\Binary\Value\Int\Word;
-use Kryus\Binary\Value\Int\SignedValueTrait;
+use Kryus\Binary\Value\Int\SignedValueInterface;
 use Kryus\Binary\Enum\Endianness;
 use PHPUnit\Framework\TestCase;
 
@@ -15,9 +14,9 @@ class SignedValueTest extends TestCase
 {
     /**
      * @dataProvider validCastToUnsignedProvider
-     * @param BinaryValue&SignedValueTrait $value
+     * @param SignedValueInterface $value
      */
-    public function testDoesCastCorrectlyToUnsigned($value): void
+    public function testDoesCastCorrectlyToUnsigned(SignedValueInterface $value): void
     {
         $signedValue = $value->toInt();
         $unsignedValue = $value->toUnsigned()->toInt();
@@ -27,9 +26,9 @@ class SignedValueTest extends TestCase
 
     /**
      * @dataProvider invalidCastToUnsignedProvider
-     * @param BinaryValue&SignedValueTrait $value
+     * @param SignedValueInterface $value
      */
-    public function testCannotCastIncorrectlyToUnsigned($value): void
+    public function testCannotCastIncorrectlyToUnsigned(SignedValueInterface $value): void
     {
         $this->expectException(\Exception::class);
 
@@ -37,7 +36,7 @@ class SignedValueTest extends TestCase
     }
 
     /**
-     * @return SignedValueTrait[]
+     * @return SignedValueInterface[]
      */
     public function validCastToUnsignedProvider(): array
     {
@@ -62,7 +61,7 @@ class SignedValueTest extends TestCase
     }
 
     /**
-     * @return SignedValueTrait[]
+     * @return SignedValueInterface[]
      */
     public function invalidCastToUnsignedProvider(): array
     {

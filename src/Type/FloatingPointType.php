@@ -11,8 +11,23 @@ class FloatingPointType extends NumericType implements FloatingPointTypeInterfac
 {
     private const IS_SIGNED = true;
 
-    public function __construct(int $byteCount)
+    private int $exponentBitCount;
+    private int $significandBitCount;
+
+    public function __construct(int $byteCount, int $exponentBitCount, int $significandBitCount)
     {
         parent::__construct($byteCount, self::IS_SIGNED);
+        $this->exponentBitCount = $exponentBitCount;
+        $this->significandBitCount = $significandBitCount;
+    }
+
+    public function getExponentBitCount(): int
+    {
+        return $this->exponentBitCount;
+    }
+
+    public function getSignificandBitCount(): int
+    {
+        return $this->significandBitCount;
     }
 }
