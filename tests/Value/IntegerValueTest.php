@@ -37,12 +37,10 @@ class IntegerValueTest extends TestCase
         self::assertSame($expectedValue, $value->toInt());
     }
 
-    public function endiannessProvider(): array
+    public function endiannessProvider(): iterable
     {
-        return [
-            'little endian' => [Endianness::ENDIANNESS_LITTLE_ENDIAN],
-            'big endian' => [Endianness::ENDIANNESS_BIG_ENDIAN],
-        ];
+        yield 'little endian' => [Endianness::ENDIANNESS_LITTLE_ENDIAN];
+        yield 'big endian' => [Endianness::ENDIANNESS_BIG_ENDIAN];
     }
 
     private function getValueTestSet(): array
@@ -67,7 +65,7 @@ class IntegerValueTest extends TestCase
         ];
     }
 
-    public function intValueTestProvider(): array
+    public function intValueTestProvider(): iterable
     {
         $values = $this->getValueTestSet();
 
@@ -86,13 +84,9 @@ class IntegerValueTest extends TestCase
             '4-byte big endian unsigned' => 0x00008081,
         ];
 
-        return array_map(
-            static function ($value, $key) use ($expectedValues) {
-                return [$value, $expectedValues[$key]];
-            },
-            $values,
-            array_keys($values)
-        );
+        foreach ($expectedValues as $key => $expectedValue) {
+            yield $key => [$values[$key], $expectedValue];
+        }
     }
 
     private function createType(int $byteCount, bool $isSigned): IntegerTypeInterface

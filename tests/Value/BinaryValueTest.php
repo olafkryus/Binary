@@ -46,7 +46,7 @@ class BinaryValueTest extends TestCase
         ];
     }
 
-    public function hexValueTestProvider(): array
+    public function hexValueTestProvider(): iterable
     {
         $values = $this->getValueTestSet();
 
@@ -60,16 +60,12 @@ class BinaryValueTest extends TestCase
             '4-byte' => $_00008081,
         ];
 
-        return array_map(
-            static function ($value, $key) use ($expectedValues) {
-                return [$value, $expectedValues[$key]];
-            },
-            $values,
-            array_keys($values)
-        );
+        foreach ($expectedValues as $key => $expectedValue) {
+            yield $key => [$values[$key], $expectedValue];
+        }
     }
 
-    public function binValueTestProvider(): array
+    public function binValueTestProvider(): iterable
     {
         $values = $this->getValueTestSet();
 
@@ -83,16 +79,12 @@ class BinaryValueTest extends TestCase
             '4-byte' => $_00008081,
         ];
 
-        return array_map(
-            static function ($value, $key) use ($expectedValues) {
-                return [$value, $expectedValues[$key]];
-            },
-            $values,
-            array_keys($values)
-        );
+        foreach ($expectedValues as $key => $expectedValue) {
+            yield $key => [$values[$key], $expectedValue];
+        }
     }
 
-    public function stringValueTestProvider(): array
+    public function stringValueTestProvider(): iterable
     {
         $values = $this->getValueTestSet();
 
@@ -106,13 +98,9 @@ class BinaryValueTest extends TestCase
             '4-byte' => $x00008081,
         ];
 
-        return array_map(
-            static function ($value, $key) use ($expectedValues) {
-                return [$value, $expectedValues[$key]];
-            },
-            $values,
-            array_keys($values)
-        );
+        foreach ($expectedValues as $key => $expectedValue) {
+            yield $key => [$values[$key], $expectedValue];
+        }
     }
 
     private function createType(int $byteCount): BinaryTypeInterface
