@@ -13,13 +13,15 @@ class Quad extends FloatingPointType
     private const BYTE_COUNT = 16;
     private const EXPONENT_BIT_COUNT = 15;
     private const SIGNIFICAND_BIT_COUNT = 112;
+    private const EXPONENT_BIAS = 16383;
 
     public function __construct()
     {
         parent::__construct(
             self::BYTE_COUNT,
             self::EXPONENT_BIT_COUNT,
-            self::SIGNIFICAND_BIT_COUNT
+            self::SIGNIFICAND_BIT_COUNT,
+            self::EXPONENT_BIAS
         );
     }
 }

@@ -13,13 +13,15 @@ class Double extends FloatingPointType
     private const BYTE_COUNT = 8;
     private const EXPONENT_BIT_COUNT = 11;
     private const SIGNIFICAND_BIT_COUNT = 52;
+    private const EXPONENT_BIAS = 1023;
 
     public function __construct()
     {
         parent::__construct(
             self::BYTE_COUNT,
             self::EXPONENT_BIT_COUNT,
-            self::SIGNIFICAND_BIT_COUNT
+            self::SIGNIFICAND_BIT_COUNT,
+            self::EXPONENT_BIAS
         );
     }
 }

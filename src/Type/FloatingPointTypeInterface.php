@@ -15,4 +15,9 @@ interface FloatingPointTypeInterface extends NumericTypeInterface
      * @return int
      */
     public function getSignificandBitCount(): int;
+
+    /**
+     * @return int
+     */
+    public function getExponentBias(): int;
 }

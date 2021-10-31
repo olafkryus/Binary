@@ -40,7 +40,7 @@ class FloatingPointValue extends NumericValue implements FloatingPointValueInter
      */
     public function isNegative(): bool
     {
-        // TODO: Implement isNegative() method.
+        return str_starts_with($this->toLittleEndian()->toBin(), '1');
     }
 
     /**
@@ -48,6 +48,70 @@ class FloatingPointValue extends NumericValue implements FloatingPointValueInter
      */
     public function toFloat(): float
     {
-        // TODO: Implement toFloat() method.
+        if ($this->isInfinite()) {
+            return $this->isNegative() ? -INF : INF;
+        }
+        if ($this->isNaN()) {
+            return NAN;
+        }
+
+        return ($this->isNegative() ? -1 : 1) * $this->getSignificand() * 2 ** $this->getExponent();
+    }
+
+    /**
+     * @return bool
+     */
+    public function isFinite(): bool
+    {
+        return $this->getExponentBin() !== str_repeat('1', $this->getType()->getExponentBitCount());
+    }
+
+    /**
+     * @return bool
+     */
+    public function isInfinite(): bool
+    {
+        return
+            !$this->isFinite() &&
+            $this->getSignificandBin() === str_repeat('0', $this->getType()->getSignificandBitCount());
+    }
+
+    /**
+     * @return bool
+     */
+    public function isNaN(): bool
+    {
+        return
+            !$this->isFinite() &&
+            $this->getSignificandBin() !== str_repeat('0', $this->getType()->getSignificandBitCount());
+    }
+
+    private function getExponent(): int
+    {
+        return bindec($this->getExponentBin()) - $this->getType()->getExponentBias();
+    }
+
+    private function getSignificand(): float
+    {
+        return 1 + (bindec($this->getSignificandBin()) / (1 << $this->getType()->getSignificandBitCount()));
+    }
+
+    private function getExponentBin(): string
+    {
+        return mb_substr(
+            $this->toLittleEndian()->toBin(),
+            1,
+            $this->getType()->getExponentBitCount()
+        );
+    }
+
+    private function getSignificandBin(): string
+    {
+        return
+            mb_substr(
+                $this->toLittleEndian()->toBin(),
+                1 + $this->getType()->getExponentBitCount(),
+                $this->getType()->getSignificandBitCount()
+            );
     }
 }

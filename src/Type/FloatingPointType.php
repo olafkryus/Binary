@@ -13,12 +13,14 @@ class FloatingPointType extends NumericType implements FloatingPointTypeInterfac
 
     private int $exponentBitCount;
     private int $significandBitCount;
+    private int $exponentBias;
 
-    public function __construct(int $byteCount, int $exponentBitCount, int $significandBitCount)
+    public function __construct(int $byteCount, int $exponentBitCount, int $significandBitCount, int $exponentBias)
     {
         parent::__construct($byteCount, self::IS_SIGNED);
         $this->exponentBitCount = $exponentBitCount;
         $this->significandBitCount = $significandBitCount;
+        $this->exponentBias = $exponentBias;
     }
 
     public function getExponentBitCount(): int
@@ -29,5 +31,10 @@ class FloatingPointType extends NumericType implements FloatingPointTypeInterfac
     public function getSignificandBitCount(): int
     {
         return $this->significandBitCount;
+    }
+
+    public function getExponentBias(): int
+    {
+        return $this->exponentBias;
     }
 }

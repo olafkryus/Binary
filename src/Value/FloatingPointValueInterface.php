@@ -17,4 +17,19 @@ interface FloatingPointValueInterface extends NumericValueInterface
      * @return float
      */
     public function toFloat(): float;
+
+    /**
+     * @return bool
+     */
+    public function isFinite(): bool;
+
+    /**
+     * @return bool
+     */
+    public function isInfinite(): bool;
+
+    /**
+     * @return bool
+     */
+    public function isNaN(): bool;
 }
